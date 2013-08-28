@@ -242,7 +242,7 @@ MyView.prototype.getContext = function(){
 };
 ```
 
-Where __extends is implemented as:
+Where `__extends` is implemented as:
 
 ```coffeescript
 var __hasProp = {}.hasOwnProperty,
@@ -273,3 +273,7 @@ Take a look at the tests for complete examples of how things should work.
 ### Support
 
 Mixen is tested in IE6+, Firefox 3+, Chrome 14+, Safari 4+, Opera 10+, Safari on iOS 3+, Android 2.2+ and Node 0.8+.
+
+### Changelog
+
+0.4.7 - Initial public release
