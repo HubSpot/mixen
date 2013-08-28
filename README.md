@@ -1,14 +1,14 @@
 Mixen
 ====================
 
-Mixen lets you combine a whole bunch of classes together to build the exact class you want to be extending.
+Mixen lets you combine a whole bunch of classes together to build the exact class you need.
 
 In traditional CoffeeScript, each class can only extend a single other class, and you can't change that
 setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
 use each class one way.  It's easy to merge classes together, but then one module's methods will clobber
 method's with that same name before it.
 
-Mixen is a 2kb library that exposes a single function.  The function, `Mixen`, allows you to combine
+Mixen is a 2kb library that exposes a single function.  The function allows you to combine
 classes together in such a way that the `super` keyword will dynamically call the appropriate method in the
 next mixin you're using.
 
@@ -20,6 +20,27 @@ and when you go to create a class, you can pick and choose which modules you nee
 >
 > These examples are in CoffeeScript.  Skip down to the bottom for a short description of how
 > this could be done with just JavaScript.  The syntax is not as nice.
+
+### Usage
+
+On the browser include `mixen.min.js`, and the `Mixen` function will be globally available.
+You can also use AMD.
+
+On node:
+
+```bash
+npm install mixen
+```
+
+```coffeescript
+Mixen = require('mixen')
+```
+
+The Mixen function takes in any number of classes, and returns an object:
+
+```coffeescript
+MyObject = Mixen(Object1, Object2, ...)
+```
 
 ### Example
 
