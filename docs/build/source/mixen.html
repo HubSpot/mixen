@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>mixen.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="Gruntfile.html">
+                Gruntfile.coffee
+              </a>
+            
+              
+              <a class="source" href="mixen.html">
+                mixen.coffee
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>mixen.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Mixen is a tool for creating superclasses composed of a bunch of mixins.</p>
+<p>You register the mixins, and then you give mixen a list of which modules you&#39;d like to use
+and it builds the superclass dynamically.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="title">indexOf</span></span> = (haystack, needle) -&gt;
+  <span class="keyword">for</span> stalk, i <span class="keyword">in</span> haystack
+    <span class="keyword">return</span> i <span class="keyword">if</span> stalk <span class="keyword">is</span> needle
+
+  <span class="keyword">return</span> -<span class="number">1</span>
+
+<span class="function"><span class="title">identity</span></span> = (arg) -&gt; arg
+
+uniqueId = <span class="keyword">do</span> -&gt;
+  id = <span class="number">0</span>
+  -&gt; id++
+
+<span class="function"><span class="title">Mixen</span></span> = -&gt;
+  Mixen.createMixen arguments...
+
+Mixen.createdMixens = {}
+
+<span class="function"><span class="title">moduleSuper</span></span> = (module, method) -&gt;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>This is called when super gets called in one of our mixin&#39;ed modules.</p>
+<p>It resolves what the next module in the module list which has
+this method defined and calls that method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  (args...) -&gt;
+    current = <span class="property">@constructor</span>::
+    id = <span class="literal">null</span>
+    <span class="keyword">while</span> <span class="keyword">not</span> id?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Navigate up the inheritance tree looking for the object we created
+when we built the mixen.  It will have the id we need to find the other
+modules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="keyword">return</span> <span class="keyword">if</span> current <span class="keyword">is</span> Object::
+
+      id = current._mixen_id
+
+      current = current.constructor.__super__.constructor::
+
+    <span class="keyword">return</span> <span class="keyword">unless</span> id?
+
+    modules = Mixen.createdMixens[id]
+
+    pos = indexOf modules, module
+    nextModule = <span class="literal">null</span>
+    <span class="keyword">while</span> pos++ &lt; modules.length - <span class="number">1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Look through the remaining modules for the next one which implements
+the method we&#39;re calling.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      nextModule = modules[pos]
+        
+      <span class="keyword">break</span> <span class="keyword">if</span> nextModule::[method]?
+
+    <span class="keyword">if</span> nextModule? <span class="keyword">and</span> nextModule::? <span class="keyword">and</span> nextModule::[method]?
+      <span class="keyword">return</span> nextModule::[method].apply @, args</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Mixens are namespaces for mixins, you create a Mixen, add a bunch of modules to it, then make your
+classes with those modules.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Mixen.<span class="function"><span class="title">createMixen</span></span> = (mods...) -&gt;
+  <span class="class"><span class="keyword">class</span> <span class="title">out</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>If the extending class calls <code>super</code>, or doesn&#39;t have a constructor,
+this will be called:</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    constructor: (args...) -&gt;
+      <span class="keyword">for</span> mod <span class="keyword">in</span> mods
+        mod.apply @, args</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Since a single mixin module can be used multiple times, we need to
+store the id of this instance on the outputted object, so we can
+figure out which modules were included with it when it comes
+time to resolve super calls.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  out::_mixen_id = uniqueId()
+
+  Mixen.createdMixens[out::_mixen_id] = mods
+
+  <span class="keyword">for</span> module <span class="keyword">in</span> mods.slice(<span class="number">0</span>).reverse()
+    <span class="keyword">for</span> own method <span class="keyword">of</span> module::
+      <span class="keyword">continue</span> <span class="keyword">if</span> method <span class="keyword">is</span> <span class="string">'constructor'</span>
+
+      <span class="keyword">if</span> <span class="keyword">typeof</span> module::[method] <span class="keyword">isnt</span> <span class="string">'function'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Non-function attributes just get copied onto the resultant object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        out::[method] = module::[method]
+        <span class="keyword">continue</span>
+
+      <span class="keyword">do</span> (method, module) -&gt;
+        <span class="keyword">if</span> module::passSuper</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>By default we modify how super works for our own purposes.
+This will cause problems if you want to use inheritance to
+define your modules and you want super to mean what it normally
+does.  The <code>passSuper</code> option will cause that clobbering to not
+occur, and will instead pass a reference to the next mixin to be
+called as the first argument to each method.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          currentMethod = out::[method] ? identity
+
+          out::[method] = (args...) -&gt;
+            module::[method].call @, currentMethod, args...
+        <span class="keyword">else</span>
+          out::[method] = (args...) -&gt;
+            module::[method].call @, args...</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Coffeescript expands super calls into ModuleName.<strong>super</strong>.methodName</p>
+<p>Dynamically composing a bunch of inheriting classes out
+of the mixins seems like a good idea, but it doesn&#39;t work because
+CoffeeScript rewrites <strong>super</strong> calls statically based on the
+class super is in, so they would not respect these classes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          module.__super__ ?= {}
+          module.__super__[method] ?= moduleSuper(module, method)
+
+  out
+
+<span class="keyword">if</span> <span class="keyword">typeof</span> define <span class="keyword">is</span> <span class="string">'function'</span> <span class="keyword">and</span> define.amd</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>AMD</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  define -&gt; Mixen
+<span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">typeof</span> exports <span class="keyword">is</span> <span class="string">'object'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  module.exports = Mixen
+<span class="keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Global</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  window.Mixen = Mixen</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

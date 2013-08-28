@@ -1,0 +1,220 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Mixen</title><link rel="icon" href="http://static.hubspot.com/favicon.ico"><link type="text/css" rel="stylesheet" href="https://static2cdn.hubspot.com/hubspot_public_assets/static-1.112/shared/sass/hubspot_public_assets.css"><link type="text/css" rel="stylesheet" href="https://static.hubspot.com/bundles/navigation.css"><link rel="stylesheet" media="all" href="docs/build/resources/styles/print.css"><link rel="stylesheet" media="all" href="docs/build/resources/styles/navigation-tweaks.css"><link rel="stylesheet" media="all" href="docs/build/resources/styles/highlight-theme-github.css"><link rel="stylesheet" media="all" href="docs/build/resources/styles/documentation.css"><script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script type="text/javascript" src="//use.typekit.net/jbn8qxr.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}
+</script></head><body><div id="hs-nav-v3" class="nav-width-flex signed-out-nav">
+    <div class="hs-nav-section main-nav">
+        <div class="nav-section-inner">
+            <ul class="nav-links-left">
+                <li class="first"><a class="nav-logo" href="http://www.hubspot.com/"><img height="34" src="https://static.hubspot.com/style-guide/img/nav-sprocket.png" width="29"></a></li>
+                <li>
+                    <a href="http://hubspot.github.com">
+                        HubSpot Open Source
+                    </a>
+                </li>
+                <li>
+                    <a href="http://dev.hubspot.com">
+                        Development Team
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav-links-right">
+                <li class="first">
+                    <a href="http://dev.hubspot.com/jobs/" class="sign-in">Work for HubSpot</a>
+                </li>
+                <li>
+                    <span class="try-label">We're hiring:</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div><div class="hs-doc-marquee"><div class="hs-page-width-normal"><div class="row-fluid"><div class="span6"><h1>Mixen</h1><h3>HubSpot Open Source Project</h3></div><div class="span6"></div></div></div></div><div class="hs-page-width-normal"><div class="row-fluid"><div class="span3"><div class="hs-doc-sidenav"><nav><ul class="hs-public-sidenav"><li class="current-nav-item"><a href="">Home</a></li><li><b>Annotated source</b></li><li class=""><a target="_blank" href="docs/build/source/Gruntfile.html">Gruntfile.coffee</a></li><li class=""><a target="_blank" href="docs/build/source/mixen.html">mixen.coffee</a></li></ul></nav></div></div><div class="span9"><div class="hs-doc-content"><h1>Mixen</h1>
+<p>Mixen is a 100 line library that exposes a single function.  The function, <code>Mixen</code>, allows you to combine
+classes together in such a way that the <code>super</code> keyword will dynamically call the appropriate method in the
+next mixin you&#39;re using.</p>
+<p>Mixen lets you mixin various modules you define to create custom superclasses which do just what you
+need, and nothing you don&#39;t.</p>
+<p>It was created to solve the problem of &quot;we want to create a parent &#39;view&#39; or &#39;model&#39; or anything
+everyone will inherit from, but not everyone needs every bell and whistle.&quot;  It lets you define modules
+and when you go to create a class, you can pick and choose which modules you need.</p>
+<blockquote>
+<p>Note:</p>
+<p>These examples are in CoffeeScript.  Skip down to the bottom for a short description of how
+this could be done with just JavaScript.  The syntax is not as nice.</p>
+</blockquote>
+<h3>Example</h3>
+<p>At some point in everyone&#39;s Backbone journey, it seems necessary to create a
+personalized extension of Backbone.View which can do all sorts of special things.</p>
+<p>As an example, Mixen allows you to create such a View superclass which mixins modular components.</p>
+<p>A mixin is just a class:</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">AwesomeMixin</span></span>
+  myMethod: -&gt;</code></pre>
+<p>Any view who would like your method can now use Mixen to mix you in:</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">MyView</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">AwesomeMixin</span>, <span class="title">Backbone</span>.<span class="title">View</span>)</span></code></pre>
+<h3>Multiple Mixins Which Share a Method</h3>
+<p>So far what you&#39;ve seen is not anything which couldn&#39;t be done with class extension, or <code>_.extends</code>.
+Mixen adds one very important capability, the ability to have multiple mixins all implement the same method.</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">CountSyncs</span></span>
+  sync: -&gt;
+    <span class="property">@syncs</span> ?= <span class="number">0</span>
+    <span class="property">@syncs</span>++
+
+    <span class="keyword">super</span></code></pre>
+<pre><code class="lang-coffeescript"><span class="comment"># There is a much better implementation of this in the standard lib</span>
+
+<span class="class"><span class="keyword">class</span> <span class="title">ThrottleSyncs</span></span>
+  sync: -&gt;
+    <span class="keyword">return</span> <span class="keyword">if</span> <span class="property">@syncing</span>
+    <span class="property">@syncing</span> = <span class="literal">true</span>
+
+    <span class="keyword">super</span>.<span class="keyword">finally</span> =&gt;
+      <span class="property">@syncing</span> = <span class="literal">false</span></code></pre>
+<p>Now, you can mix in both classes.  When the first mixin calls <code>super</code>, it will dynamically find and call the second
+mixin&#39;s <code>sync</code> method.</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">MyModel</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">ThrottleSyncs</span>, <span class="title">CountSyncs</span>, <span class="title">Backbone</span>.<span class="title">Model</span>)</span></code></pre>
+<p><code>MyModel</code> will both throttle it&#39;s sync&#39;s and keep track of it&#39;s sync count.</p>
+<p>Note that the count <code>CountSyncs</code> will change depending on if it is listed before or after
+<code>Throttle Syncs</code>.  All methods are resolved from left to right.  In other words,
+when you call <code>super</code>, you are calling the mixin to the current mixins right.</p>
+<h4>The End of the Chain</h4>
+<p>When you&#39;re developing a mixin, you don&#39;t know if your mixin will be the last in a chain used
+to create a class or not.  Therefore you must always call super (unless you want to break the chain), and
+you must always be ready for <code>super</code> to return undefined (as it will if there are no more classes mixed in
+which implement that method).</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">UserInContext</span></span>
+  getContext: -&gt;
+    context = <span class="keyword">super</span> ? {}
+    context.user = <span class="string">'bob smith'</span>
+    context
+
+<span class="class"><span class="keyword">class</span> <span class="title">AuthInContext</span></span>
+  getContext: -&gt;
+    context = <span class="keyword">super</span> ? {}
+    context.auth = <span class="string">'logged-in'</span>
+    context</code></pre>
+<p>Each getContext method will be called, in the order they are defined in the Mixen call:</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">MyView</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">AuthInContext</span>, <span class="title">UserInContext</span>, <span class="title">Backbone</span>.<span class="title">View</span>)</span>
+  getContext: -&gt;
+    context = <span class="keyword">super</span>
+    context.x = <span class="number">2</span>
+    context</code></pre>
+<h3>Mixening in Constructors</h3>
+<p>Mixins can have constructors.  As long as the resultant class either does not have a constructor,
+or calls <code>super</code> in it&#39;s constructor, all of the mixins constructors will be called in the order
+they are defined.  If you do not wish for the constructors to be called, simply don&#39;t call super
+in the constructor of the class extending the mixen.</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">CallInitialize</span></span>
+  constructor: -&gt;
+    <span class="property">@initialize</span>?()</code></pre>
+<pre><code class="lang-coffeescript"><span class="comment"># initialize will be called</span>
+<span class="class"><span class="keyword">class</span> <span class="title">MyThing</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">CallInitialize</span>)</span>
+
+<span class="comment"># initialize will be called</span>
+<span class="class"><span class="keyword">class</span> <span class="title">MyThing</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">CallInitialize</span>)</span>
+  constructor: -&gt;
+    <span class="comment"># Do whatever other stuff you want...</span>
+
+    <span class="keyword">super</span>
+
+<span class="comment"># initialize WON'T be called</span>
+<span class="class"><span class="keyword">class</span> <span class="title">MyThing</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">CallInitialize</span>)</span>
+  constructor: -&gt;
+    <span class="comment"># Never called super...</span></code></pre>
+<p>Note, that unlike the other methods, mixins do not need to call <code>super</code> in their constructors.  This is
+necessary because, unlike with standard methods, all classes have a constructor, even if you never
+explicitly implemented one.  This means that if we made you call <code>super</code>, you would have to explicitly
+call <code>super</code> in each constructor, even when you don&#39;t care to specify one.  To keep things simple, we
+always call all the mixin&#39;s constructors in the order they are specified, provided the mixing class doesn&#39;t
+explicitly prevent it.</p>
+<h3>Using passSuper</h3>
+<p>All of this super overriding can be problematic if you want to use inheritance to define your mixins (make
+mixins which extend other mixins, most people don&#39;t do this).  You can use the <code>passSuper</code> option to get
+Mixen to give you the super functions, and leave the built-in one alone:</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
+  passSuper: <span class="literal">true</span>
+
+  getContext: (parent, otherArg) -&gt;
+    context = parent(otherArg) ? {}
+    context.otherThing = otherArg
+    context</code></pre>
+<h3>Aliases</h3>
+<p>Mixen doesn&#39;t create them for you, but you&#39;re more than welcome to create some helpful aliases as you need:</p>
+<pre><code class="lang-coffeescript">Mixen.<span class="function"><span class="title">View</span></span> = (modules...) -&gt;
+  Mixen(modules..., Backbone.View)</code></pre>
+<p>You can do a similar thing to create a default list of mixins for your application:</p>
+<pre><code class="lang-coffeescript"><span class="function"><span class="title">ViewMixen</span></span> = (modules...) -&gt;
+  Mixen(modules..., EventJanitor, Backbone.View)</code></pre>
+<h3>Composition</h3>
+<p>You can safely mixin other mixens:</p>
+<pre><code class="lang-coffeescript">BaseView = Mixen(EventJanitor, Backbone.View)
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyView</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">SuperSpecialModule</span>, <span class="title">BaseView</span>)</span></code></pre>
+<h3>Not Using CoffeeScript?</h3>
+<p>If you&#39;re not using CoffeeScript, it is possible to write the necessary js manually.  Replicating CoffeeScript&#39;s
+interitance mechanism is fairly complicated however.  It requires a robust extension mechanism, and replacing every
+<code>super</code> call used above with <code>ModuleName.__super__.methodName</code>.  If you&#39;d like you could also use the <code>passSuper</code> option explained
+above to avoid the awkward <code>__super__</code> syntax.</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> AuthInContext, MyView, UserInContext, _ref,
+  __hasProp = {}.hasOwnProperty,
+  __extends = <span class="keyword">function</span>(child, parent){
+    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> parent) {
+      <span class="keyword">if</span> (__hasProp.call(parent, key))
+        child[key] = parent[key];
+    }
+
+    <span class="function"><span class="keyword">function</span> <span class="title">ctor</span><span class="params">()</span> {</span>
+      <span class="keyword">this</span>.constructor = child;
+    }
+
+    ctor.prototype = parent.prototype;
+    child.prototype = <span class="keyword">new</span> ctor();
+    child.__super__ = parent.prototype;
+
+    <span class="keyword">return</span> child;
+  };
+
+UserInContext = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>}
+
+UserInContext.prototype.getContext = <span class="keyword">function</span>(){
+  <span class="keyword">var</span> context;
+
+  context = UserInContext.__super__.getContext.apply(<span class="keyword">this</span>, arguments) || {};
+  context.user = <span class="string">'bob smith'</span>;
+  <span class="keyword">return</span> context;
+};
+
+AuthInContext = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>}
+
+AuthInContext.prototype.getContext = <span class="keyword">function</span>(){
+  <span class="keyword">var</span> context;
+
+  context = AuthInContext.__super__.getContext.apply(<span class="keyword">this</span>, arguments) || {};
+  context.auth = <span class="string">'logged-in'</span>;
+  <span class="keyword">return</span> context;
+};
+
+MyView = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>
+  <span class="keyword">return</span> MyView.__super__.constructor.apply(<span class="keyword">this</span>, arguments);
+}
+
+__extends(MyView, Mixen(AuthInContext, UserInContext, Backbone.View));
+
+MyView.prototype.getContext = <span class="keyword">function</span>(){
+  <span class="keyword">var</span> context;
+
+  context = MyView.__super__.getContext.apply(<span class="keyword">this</span>, arguments);
+  context.x = <span class="number">2</span>;
+  <span class="keyword">return</span> context;
+};</code></pre>
+<h3>Debugging</h3>
+<p>If it&#39;s not working the way you expect, it&#39;s usually because you forgot to call <code>super</code> in one of your methods.</p>
+<p>Take a look at the tests for complete examples of how things should work.</p>
+<h3>Support</h3>
+<p>Mixen is tested in IE6+, Firefox 3+, Chrome 14+, Safari 4+, Opera 10+, Safari on iOS 3+, Android 2.2+, Node 0.6+.</p>
+</div></div></div></div><div class="hs3-public-footer"><div class="row-fluid hs-page-width-normal"><div class="span3 hidden-phone"><h3>HubSpot</h3><ul><li><a href="http://www.hubspot.com">Home</a></li><li><a href="http://www.hubspot.com/software">Products</a></li><li><a href="http://www.hubspot.com/internet-marketing-company/">About</a></li></ul></div><div class="span3"><h3>Projects</h3><ul><li><a href="http://github.hubspot.com/messenger">Messenger</a></li><li><a href="http://github.hubspot.com/facewall">Facewall</a></li><li><a href="http://github.hubspot.com/jquery-zoomer">jQuery Zoomer</a></li><li><a href="http://github.hubspot.com/humanize">Humanize</a></li><li><a href="http://github.hubspot.com/teeble">Teeble</a></li></ul></div><div class="span3"><h3>Development Team</h3><ul><li><a href="http://dev.hubspot.com">Home</a></li><li><a href="http://dev.hubspot.com/teams">Teams</a></li><li><a href="http://dev.hubspot.com/people">People</a></li><li><a href="http://dev.hubspot.com/jobs">Jobs</a></li></ul></div><div class="span3 hidden-phone"><h3>Developer API</h3><ul><li><a href="http://developers.hubspot.com/">Developer Documentation</a></li></ul></div></div></div><!-- Start of Async HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hubspot.com/analytics/'+(Math.ceil(new Date()/r)*r)+'/51294.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End of Async HubSpot Analytics Code --></body></html>

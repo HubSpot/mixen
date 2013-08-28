@@ -1,0 +1,30 @@
+@media(max-width: 1080px) {
+    #hs-nav-v3.nav-width-flex .nav-section-inner {
+        min-width: 0px;
+        max-width: 100% !important;
+    }
+}
+
+@media(max-width: 768px) {
+    #hs-nav-v3 li {
+        display: none !important;
+    }
+
+    #hs-nav-v3 li.first {
+        display: block !important;
+    }
+}
+
+#hs-nav-v3 {
+    margin-bottom: 26px;
+}
+
+#hs-nav-v3 > .hs-nav-section.main-nav {
+    background: #333;
+    border-color: #333;
+    box-shadow: none;
+}
+
+#hs-nav-v3 * {
+    text-shadow: none !important;
+}
