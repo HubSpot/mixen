@@ -1,7 +1,8 @@
 Mixen
 ====================
 
-Mixen lets you combine a whole bunch of classes together.
+Mixen lets you combine classes together as needed.  With it you can build smaller, easier to understand and
+more testable components, and more easily share code with others.
 
 In traditional CoffeeScript, each class can only extend a single other class, and you can't change that
 setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
