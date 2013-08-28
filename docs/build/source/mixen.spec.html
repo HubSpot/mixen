@@ -54,7 +54,30 @@
             <div class="content"><div class='highlight'><pre>describe <span class="string">'Mixen'</span>, -&gt;
   it <span class="string">'should be defined'</span>, -&gt;
     expect(Mixen).toBeDefined()
-    
+   
+  it <span class="string">'should be possible to compose a class'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
+      x: -&gt; <span class="number">3</span>
+
+    X = Mixen(MyModule)
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x()).toBe(<span class="number">3</span>)
+
+  it <span class="string">'should be possible to compose multiple classes together'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      x: -&gt; (<span class="keyword">super</span> ? <span class="number">0</span>) + <span class="number">5</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module2</span></span>
+      x: -&gt; (<span class="keyword">super</span> ? <span class="number">0</span>) + <span class="number">2</span>
+
+    X = Mixen(Module1, Module2)
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x()).toBe(<span class="number">7</span>)
+
   it <span class="string">'should be possible to pass through a method from a mixin'</span>, -&gt;
     <span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
       x: -&gt; <span class="number">3</span>
@@ -63,9 +86,7 @@
 
     inst = <span class="keyword">new</span> X
 
-    expect(inst.x).toBeDefined()
     expect(inst.x()).toBe(<span class="number">3</span>)
-    expect(<span class="keyword">typeof</span> inst.x).toBe(<span class="string">'function'</span>)
 
   it <span class="string">'should pass references to the previous function'</span>, -&gt;
     <span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
