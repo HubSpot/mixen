@@ -6,6 +6,50 @@
     it('should be defined', function() {
       return expect(Mixen).toBeDefined();
     });
+    it('should be possible to compose a class', function() {
+      var MyModule, X, inst;
+      MyModule = (function() {
+        function MyModule() {}
+
+        MyModule.prototype.x = function() {
+          return 3;
+        };
+
+        return MyModule;
+
+      })();
+      X = Mixen(MyModule);
+      inst = new X;
+      return expect(inst.x()).toBe(3);
+    });
+    it('should be possible to compose multiple classes together', function() {
+      var Module1, Module2, X, inst;
+      Module1 = (function() {
+        function Module1() {}
+
+        Module1.prototype.x = function() {
+          var _ref;
+          return ((_ref = Module1.__super__.x.apply(this, arguments)) != null ? _ref : 0) + 5;
+        };
+
+        return Module1;
+
+      })();
+      Module2 = (function() {
+        function Module2() {}
+
+        Module2.prototype.x = function() {
+          var _ref;
+          return ((_ref = Module2.__super__.x.apply(this, arguments)) != null ? _ref : 0) + 2;
+        };
+
+        return Module2;
+
+      })();
+      X = Mixen(Module1, Module2);
+      inst = new X;
+      return expect(inst.x()).toBe(7);
+    });
     it('should be possible to pass through a method from a mixin', function() {
       var MyModule, X, inst, _ref;
       MyModule = (function() {
@@ -30,9 +74,7 @@
 
       })(Mixen(MyModule));
       inst = new X;
-      expect(inst.x).toBeDefined();
-      expect(inst.x()).toBe(3);
-      return expect(typeof inst.x).toBe('function');
+      return expect(inst.x()).toBe(3);
     });
     it('should pass references to the previous function', function() {
       var MyModule, X, inst, _ref;

@@ -1,7 +1,30 @@
 describe 'Mixen', ->
   it 'should be defined', ->
     expect(Mixen).toBeDefined()
-    
+   
+  it 'should be possible to compose a class', ->
+    class MyModule
+      x: -> 3
+
+    X = Mixen(MyModule)
+
+    inst = new X
+
+    expect(inst.x()).toBe(3)
+
+  it 'should be possible to compose multiple classes together', ->
+    class Module1
+      x: -> (super ? 0) + 5
+
+    class Module2
+      x: -> (super ? 0) + 2
+
+    X = Mixen(Module1, Module2)
+
+    inst = new X
+
+    expect(inst.x()).toBe(7)
+
   it 'should be possible to pass through a method from a mixin', ->
     class MyModule
       x: -> 3
@@ -10,9 +33,7 @@ describe 'Mixen', ->
 
     inst = new X
 
-    expect(inst.x).toBeDefined()
     expect(inst.x()).toBe(3)
-    expect(typeof inst.x).toBe('function')
 
   it 'should pass references to the previous function', ->
     class MyModule

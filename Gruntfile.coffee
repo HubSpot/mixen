@@ -9,7 +9,7 @@ module.exports = (grunt) ->
 
     watch:
       coffee:
-        files: "<%= coffee.config.src %>"
+        files: ['mixen.coffee', 'spec/mixen.spec.coffee']
         tasks: ["coffee", "uglify"]
 
     uglify:
