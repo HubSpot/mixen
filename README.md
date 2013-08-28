@@ -17,16 +17,14 @@ class MyOtherModel extends Mixen(APIBinding, Backbone.Model)
   # MyOtherModel -> APIBinding -> Backbone.Model
 ```
 
-The 2kb library only exposes a single function.  This function allows you to combine
+The 2kb library only exposes a single function, `Mixen`.  This function allows you to combine
 classes together in such a way that the `super` keyword will dynamically call the appropriate method in the
 next mixin you're using.
-
-With mixen, when you define a mixin, you don't have to define what it is inheriting from.
 
 > Note:
 >
 > These examples are in CoffeeScript.  Skip down to the bottom for a short description of how
-> this could be done with just JavaScript.  The syntax is not as nice.
+> this can be done with JavaScript.
 
 ### Usage
 
