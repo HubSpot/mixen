@@ -1,21 +1,27 @@
 Mixen
 ====================
 
-Mixen lets you combine classes together as needed.  With it you can build smaller, easier to understand and
+Mixen lets you combine classes on the fly.  With it you can build smaller, easier to understand and
 more testable components, and more easily share code with others.  **It does not just merge the prototypes.**
 
-In traditional CoffeeScript, each class can only extend a single other class, and you can't change that
-setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
-use each class one way.  It's easy to merge classes together, but then one module's methods will clobber
-method's with that same name before it.
+```coffeescript
+class MyModel extends Mixen(Throttle, APIBinding, Validate, Backbone.Model)
+  # Inheritance Chain:
+  #
+  # MyModel -> Throttle -> APIBinding -> Validate -> Backbone.Model
+
+
+class MyOtherModel extends Mixen(APIBinding, Backbone.Model)
+  # Inheritance Chain:
+  #
+  # MyOtherModel -> APIBinding -> Backbone.Model
+```
 
 The 2kb library only exposes a single function.  This function allows you to combine
 classes together in such a way that the `super` keyword will dynamically call the appropriate method in the
 next mixin you're using.
 
-It was created to solve the problem of "we want to create a parent 'view' or 'model' or anything
-everyone will inherit from, but not everyone needs every bell and whistle."  It lets you define modules
-and when you go to create a class, you can pick and choose which modules you need.
+With mixen, when you define a mixin, you don't have to define what it is inheriting from.
 
 > Note:
 >
@@ -201,24 +207,7 @@ interitance mechanism is fairly complicated however.  It requires a robust exten
 `super` call used above with `ModuleName.__super__.methodName`.
 
 ```javascript
-var AuthInContext, MyView, UserInContext,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent){
-    for (var key in parent) {
-      if (__hasProp.call(parent, key))
-        child[key] = parent[key];
-    }
-
-    function ctor() {
-      this.constructor = child;
-    }
-
-    ctor.prototype = parent.prototype;
-    child.prototype = new ctor();
-    child.__super__ = parent.prototype;
-
-    return child;
-  };
+var AuthInContext, MyView, UserInContext;
 
 UserInContext = function (){}
 
@@ -252,6 +241,28 @@ MyView.prototype.getContext = function(){
   context = MyView.__super__.getContext.apply(this, arguments);
   context.x = 2;
   return context;
+};
+```
+
+Where __extends is implemented as:
+
+```coffeescript
+var __hasProp = {}.hasOwnProperty,
+__extends = function(child, parent){
+  for (var key in parent) {
+    if (__hasProp.call(parent, key))
+      child[key] = parent[key];
+  }
+
+  function ctor() {
+    this.constructor = child;
+  }
+
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor();
+  child.__super__ = parent.prototype;
+
+  return child;
 };
 ```
 
