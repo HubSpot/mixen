@@ -200,7 +200,7 @@ class MyView extends Mixen(SuperSpecialModule, BaseView)
 ### Not Using CoffeeScript?
 
 If you're not using CoffeeScript, it is possible to write the necessary js manually.  Replicating CoffeeScript's
-interitance mechanism is fairly complicated however.  It requires a robust extension mechanism, and replacing every
+inheritance mechanism is fairly complicated however.  It requires a robust extension mechanism, and replacing every
 `super` call used above with `ModuleName.__super__.methodName`.
 
 ```javascript
