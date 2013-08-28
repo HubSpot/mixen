@@ -1,7 +1,7 @@
 {
   "name": "mixen",
   "version": "0.4.7",
-  "description": "Real multiple inheritance in CoffeeScript",
+  "description": "Combine Javascript classes on the fly",
   "main": "static/coffee/mixen.coffee",
   "directories": {
     "doc": "docs"
