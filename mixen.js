@@ -86,25 +86,16 @@
       module = _ref[_i];
       _ref1 = module.prototype;
       _fn = function(method, module) {
-        var currentMethod, _base, _ref2;
-        if (module.prototype.passSuper) {
-          currentMethod = (_ref2 = out.prototype[method]) != null ? _ref2 : identity;
-          return out.prototype[method] = function() {
-            var args, _ref3;
-            args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-            return (_ref3 = module.prototype[method]).call.apply(_ref3, [this, currentMethod].concat(__slice.call(args)));
-          };
-        } else {
-          out.prototype[method] = function() {
-            var args, _ref3;
-            args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-            return (_ref3 = module.prototype[method]).call.apply(_ref3, [this].concat(__slice.call(args)));
-          };
-          if (module.__super__ == null) {
-            module.__super__ = {};
-          }
-          return (_base = module.__super__)[method] != null ? (_base = module.__super__)[method] : _base[method] = moduleSuper(module, method);
+        var _base;
+        out.prototype[method] = function() {
+          var args, _ref2;
+          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          return (_ref2 = module.prototype[method]).call.apply(_ref2, [this].concat(__slice.call(args)));
+        };
+        if (module.__super__ == null) {
+          module.__super__ = {};
         }
+        return (_base = module.__super__)[method] != null ? (_base = module.__super__)[method] : _base[method] = moduleSuper(module, method);
       };
       for (method in _ref1) {
         if (!__hasProp.call(_ref1, method)) continue;

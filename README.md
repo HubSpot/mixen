@@ -146,22 +146,6 @@ call `super` in each constructor, even when you don't care to specify one.  To k
 always call all the mixin's constructors in the order they are specified, provided the mixing class doesn't
 explicitly prevent it.
 
-### Using passSuper
-
-All of this super overriding can be problematic if you want to use inheritance to define your mixins (make
-mixins which extend other mixins, most people don't do this).  You can use the `passSuper` option to get
-Mixen to give you the super functions, and leave the built-in one alone:
-
-```coffeescript
-class MyModule
-  passSuper: true
-
-  getContext: (parent, otherArg) ->
-    context = parent(otherArg) ? {}
-    context.otherThing = otherArg
-    context
-```
-
 ### Aliases
 
 Mixen doesn't create them for you, but you're more than welcome to create some helpful aliases as you need:
@@ -192,8 +176,7 @@ class MyView extends Mixen(SuperSpecialModule, BaseView)
 
 If you're not using CoffeeScript, it is possible to write the necessary js manually.  Replicating CoffeeScript's
 interitance mechanism is fairly complicated however.  It requires a robust extension mechanism, and replacing every
-`super` call used above with `ModuleName.__super__.methodName`.  If you'd like you could also use the `passSuper` option explained
-above to avoid the awkward `__super__` syntax.
+`super` call used above with `ModuleName.__super__.methodName`.
 
 ```javascript
 var AuthInContext, MyView, UserInContext, _ref,
