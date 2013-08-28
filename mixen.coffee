@@ -28,13 +28,18 @@ moduleSuper = (module, method) ->
   (args...) ->
     current = @constructor::
     id = null
-    while not id?
+    while true
       # Navigate up the inheritance tree looking for the object we created
       # when we built the mixen.  It will have the id we need to find the other
       # modules.
+
+      # We've hit Object, we're at the top of the inheritance list
       return if current is Object::
 
       id = current._mixen_id
+
+      # current is a Mixen
+      break if id?
 
       current = current.constructor.__super__.constructor::
 

@@ -38,11 +38,14 @@
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       current = this.constructor.prototype;
       id = null;
-      while (id == null) {
+      while (true) {
         if (current === Object.prototype) {
           return;
         }
         id = current._mixen_id;
+        if (id != null) {
+          break;
+        }
         current = current.constructor.__super__.constructor.prototype;
       }
       if (id == null) {
