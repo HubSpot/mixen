@@ -1,12 +1,16 @@
 Mixen
 ====================
 
-Mixen is a 100 line library that exposes a single function.  The function, `Mixen`, allows you to combine
+Mixen lets you combine a whole bunch of classes together to build the exact class you want to be extending.
+
+In traditional CoffeeScript, each class can only extend a single other class, and you can't change that
+setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
+use each class one way.  It's easy to merge classes together, but then one module's methods will clobber
+method's with that same name before it.
+
+Mixen is a 2kb library that exposes a single function.  The function, `Mixen`, allows you to combine
 classes together in such a way that the `super` keyword will dynamically call the appropriate method in the
 next mixin you're using.
-
-Mixen lets you mixin various modules you define to create custom superclasses which do just what you
-need, and nothing you don't.
 
 It was created to solve the problem of "we want to create a parent 'view' or 'model' or anything
 everyone will inherit from, but not everyone needs every bell and whistle."  It lets you define modules
@@ -22,7 +26,7 @@ and when you go to create a class, you can pick and choose which modules you nee
 At some point in everyone's Backbone journey, it seems necessary to create a
 personalized extension of Backbone.View which can do all sorts of special things.
 
-As an example, Mixen allows you to create such a View superclass which mixins modular components.
+Mixen allows you to create such a View superclass which mixins modular components.
 
 A mixin is just a class:
 
@@ -52,8 +56,6 @@ class CountSyncs
 ```
 
 ```coffeescript
-# There is a much better implementation of this in the standard lib
-
 class ThrottleSyncs
   sync: ->
     return if @syncing
@@ -137,28 +139,12 @@ class MyThing extends Mixen(CallInitialize)
     # Never called super...
 ```
 
-Note, that unlike the other methods, mixins do not need to call `super` in their constructors.  This is
+Note, that unlike the other methods, mixins should not call `super` in their constructors.  This is
 necessary because, unlike with standard methods, all classes have a constructor, even if you never
 explicitly implemented one.  This means that if we made you call `super`, you would have to explicitly
 call `super` in each constructor, even when you don't care to specify one.  To keep things simple, we
 always call all the mixin's constructors in the order they are specified, provided the mixing class doesn't
 explicitly prevent it.
-
-### Using passSuper
-
-All of this super overriding can be problematic if you want to use inheritance to define your mixins (make
-mixins which extend other mixins, most people don't do this).  You can use the `passSuper` option to get
-Mixen to give you the super functions, and leave the built-in one alone:
-
-```coffeescript
-class MyModule
-  passSuper: true
-
-  getContext: (parent, otherArg) ->
-    context = parent(otherArg) ? {}
-    context.otherThing = otherArg
-    context
-```
 
 ### Aliases
 
@@ -190,8 +176,7 @@ class MyView extends Mixen(SuperSpecialModule, BaseView)
 
 If you're not using CoffeeScript, it is possible to write the necessary js manually.  Replicating CoffeeScript's
 interitance mechanism is fairly complicated however.  It requires a robust extension mechanism, and replacing every
-`super` call used above with `ModuleName.__super__.methodName`.  If you'd like you could also use the `passSuper` option explained
-above to avoid the awkward `__super__` syntax.
+`super` call used above with `ModuleName.__super__.methodName`.
 
 ```javascript
 var AuthInContext, MyView, UserInContext, _ref,

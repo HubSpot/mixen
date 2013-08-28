@@ -82,29 +82,17 @@ Mixen.createMixen = (mods...) ->
         continue
 
       do (method, module) ->
-        if module::passSuper
-          # By default we modify how super works for our own purposes.
-          # This will cause problems if you want to use inheritance to
-          # define your modules and you want super to mean what it normally
-          # does.  The `passSuper` option will cause that clobbering to not
-          # occur, and will instead pass a reference to the next mixin to be
-          # called as the first argument to each method.
-          currentMethod = out::[method] ? identity
+        out::[method] = (args...) ->
+          module::[method].call @, args...
 
-          out::[method] = (args...) ->
-            module::[method].call @, currentMethod, args...
-        else
-          out::[method] = (args...) ->
-            module::[method].call @, args...
-
-          # Coffeescript expands super calls into ModuleName.__super__.methodName
-          #
-          # Dynamically composing a bunch of inheriting classes out
-          # of the mixins seems like a good idea, but it doesn't work because
-          # CoffeeScript rewrites __super__ calls statically based on the
-          # class super is in, so they would not respect these classes.
-          module.__super__ ?= {}
-          module.__super__[method] ?= moduleSuper(module, method)
+        # Coffeescript expands super calls into ModuleName.__super__.methodName
+        #
+        # Dynamically composing a bunch of inheriting classes out
+        # of the mixins seems like a good idea, but it doesn't work because
+        # CoffeeScript rewrites __super__ calls statically based on the
+        # class super is in, so they would not respect these classes.
+        module.__super__ ?= {}
+        module.__super__[method] ?= moduleSuper(module, method)
 
   out
 
