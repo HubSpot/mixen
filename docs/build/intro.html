@@ -26,12 +26,12 @@
         </div>
     </div>
 </div><div class="hs-page-width-normal"><div class="row-fluid"><div class="span12"><h1 class="hs-doc-page-header">Mixen</h1></div></div></div><div class="hs-page-width-normal"><div class="row-fluid"><div class="span3"><div class="hs-doc-sidenav"><nav><ul class="hs-public-sidenav"><li class=""><a href="../../../">Home</a></li><li><b>Annotated source</b></li><li class=""><a target="_blank" href="../../../docs/build/source/mixen.html">mixen.coffee</a></li><li class=""><a target="_blank" href="../../../docs/build/source/mixen.spec.html">spec/mixen.spec.coffee</a></li></ul></nav></div></div><div class="span9"><div class="hs-doc-content"><h1>Mixen</h1>
-<p>Mixen lets you combine a whole bunch of classes together to build the exact class you want to be extending.</p>
+<p>Mixen lets you combine a whole bunch of classes together to build the exact class you need.</p>
 <p>In traditional CoffeeScript, each class can only extend a single other class, and you can&#39;t change that
 setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
 use each class one way.  It&#39;s easy to merge classes together, but then one module&#39;s methods will clobber
 method&#39;s with that same name before it.</p>
-<p>Mixen is a 2kb library that exposes a single function.  The function, <code>Mixen</code>, allows you to combine
+<p>Mixen is a 2kb library that exposes a single function.  The function allows you to combine
 classes together in such a way that the <code>super</code> keyword will dynamically call the appropriate method in the
 next mixin you&#39;re using.</p>
 <p>It was created to solve the problem of &quot;we want to create a parent &#39;view&#39; or &#39;model&#39; or anything
@@ -42,6 +42,14 @@ and when you go to create a class, you can pick and choose which modules you nee
 <p>These examples are in CoffeeScript.  Skip down to the bottom for a short description of how
 this could be done with just JavaScript.  The syntax is not as nice.</p>
 </blockquote>
+<h3>Usage</h3>
+<p>On the browser include <code>mixen.min.js</code>, and the <code>Mixen</code> function will be globally available.
+You can also use AMD.</p>
+<p>On node:</p>
+<pre><code class="lang-bash">npm install mixen</code></pre>
+<pre><code class="lang-coffeescript">Mixen = require(<span class="string">'mixen'</span>)</code></pre>
+<p>The Mixen function takes in any number of classes, and returns an object:</p>
+<pre><code class="lang-coffeescript">MyObject = Mixen(Object1, Object2, ...)</code></pre>
 <h3>Example</h3>
 <p>At some point in everyone&#39;s Backbone journey, it seems necessary to create a
 personalized extension of Backbone.View which can do all sorts of special things.</p>
