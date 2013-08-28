@@ -1,14 +1,14 @@
 Mixen
 ====================
 
-Mixen lets you combine a whole bunch of classes together to build the exact class you need.
+Mixen lets you combine a whole bunch of classes together.
 
 In traditional CoffeeScript, each class can only extend a single other class, and you can't change that
 setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
 use each class one way.  It's easy to merge classes together, but then one module's methods will clobber
 method's with that same name before it.
 
-Mixen is a 2kb library that exposes a single function.  The function allows you to combine
+The 2kb library only exposes a single function.  This function allows you to combine
 classes together in such a way that the `super` keyword will dynamically call the appropriate method in the
 next mixin you're using.
 
