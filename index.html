@@ -26,18 +26,22 @@
         </div>
     </div>
 </div><div class="hs-doc-marquee"><div class="hs-page-width-normal"><div class="row-fluid"><div class="span6"><h1>Mixen</h1><h3>HubSpot Open Source Project</h3></div><div class="span6"></div></div></div></div><div class="hs-page-width-normal"><div class="row-fluid"><div class="span3"><div class="hs-doc-sidenav"><nav><ul class="hs-public-sidenav"><li class="current-nav-item"><a href="">Home</a></li><li><b>Annotated source</b></li><li class=""><a target="_blank" href="docs/build/source/mixen.html">mixen.coffee</a></li><li class=""><a target="_blank" href="docs/build/source/mixen.spec.html">spec/mixen.spec.coffee</a></li></ul></nav></div></div><div class="span9"><div class="hs-doc-content"><h1>Mixen</h1>
-<p>Mixen lets you combine classes together as needed.  With it you can build smaller, easier to understand and
+<p>Mixen lets you combine classes on the fly.  With it you can build smaller, easier to understand and
 more testable components, and more easily share code with others.  <strong>It does not just merge the prototypes.</strong></p>
-<p>In traditional CoffeeScript, each class can only extend a single other class, and you can&#39;t change that
-setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
-use each class one way.  It&#39;s easy to merge classes together, but then one module&#39;s methods will clobber
-method&#39;s with that same name before it.</p>
+<pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">MyModel</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Throttle</span>, <span class="title">APIBinding</span>, <span class="title">Validate</span>, <span class="title">Backbone</span>.<span class="title">Model</span>)</span>
+  <span class="comment"># Inheritance Chain:</span>
+  <span class="comment">#</span>
+  <span class="comment"># MyModel -&gt; Throttle -&gt; APIBinding -&gt; Validate -&gt; Backbone.Model</span>
+
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyOtherModel</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">APIBinding</span>, <span class="title">Backbone</span>.<span class="title">Model</span>)</span>
+  <span class="comment"># Inheritance Chain:</span>
+  <span class="comment">#</span>
+  <span class="comment"># MyOtherModel -&gt; APIBinding -&gt; Backbone.Model</span></code></pre>
 <p>The 2kb library only exposes a single function.  This function allows you to combine
 classes together in such a way that the <code>super</code> keyword will dynamically call the appropriate method in the
 next mixin you&#39;re using.</p>
-<p>It was created to solve the problem of &quot;we want to create a parent &#39;view&#39; or &#39;model&#39; or anything
-everyone will inherit from, but not everyone needs every bell and whistle.&quot;  It lets you define modules
-and when you go to create a class, you can pick and choose which modules you need.</p>
+<p>With mixen, when you define a mixin, you don&#39;t have to define what it is inheriting from.</p>
 <blockquote>
 <p>Note:</p>
 <p>These examples are in CoffeeScript.  Skip down to the bottom for a short description of how
