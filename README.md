@@ -28,7 +28,7 @@ next mixin you're using.
 
 ### Usage
 
-On the browser include `mixen.min.js`, and the `Mixen` function will be globally available.
+On the browser include [mixen.min.js](https://github.com/HubSpot/Mixen/blob/master/mixen.min.js), and the `Mixen` function will be globally available.
 You can also use AMD.
 
 On node:
