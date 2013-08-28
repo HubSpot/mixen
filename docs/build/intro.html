@@ -38,14 +38,13 @@ more testable components, and more easily share code with others.  <strong>It do
   <span class="comment"># Inheritance Chain:</span>
   <span class="comment">#</span>
   <span class="comment"># MyOtherModel -&gt; APIBinding -&gt; Backbone.Model</span></code></pre>
-<p>The 2kb library only exposes a single function.  This function allows you to combine
+<p>The 2kb library only exposes a single function, <code>Mixen</code>.  This function allows you to combine
 classes together in such a way that the <code>super</code> keyword will dynamically call the appropriate method in the
 next mixin you&#39;re using.</p>
-<p>With mixen, when you define a mixin, you don&#39;t have to define what it is inheriting from.</p>
 <blockquote>
 <p>Note:</p>
 <p>These examples are in CoffeeScript.  Skip down to the bottom for a short description of how
-this could be done with just JavaScript.  The syntax is not as nice.</p>
+this can be done with JavaScript.</p>
 </blockquote>
 <h3>Usage</h3>
 <p>On the browser include <code>mixen.min.js</code>, and the <code>Mixen</code> function will be globally available.
@@ -210,7 +209,7 @@ __extends = <span class="reserved">function</span>(child, parent){
 <p>If it&#39;s not working the way you expect, it&#39;s usually because you forgot to call <code>super</code> in one of your methods.</p>
 <p>Take a look at the tests for complete examples of how things should work.</p>
 <h3>Support</h3>
-<p>Mixen is tested in IE6+, Firefox 3+, Chrome 14+, Safari 4+, Opera 10+, Safari on iOS 3+, Android 2.2+ and Node 0.6+.</p>
+<p>Mixen is tested in IE6+, Firefox 3+, Chrome 14+, Safari 4+, Opera 10+, Safari on iOS 3+, Android 2.2+ and Node 0.8+.</p>
 </div></div></div></div><div class="hs3-public-footer"><div class="row-fluid hs-page-width-normal"><div class="span3 hidden-phone"><h3>HubSpot</h3><ul><li><a href="http://www.hubspot.com">Home</a></li><li><a href="http://www.hubspot.com/software">Products</a></li><li><a href="http://www.hubspot.com/internet-marketing-company/">About</a></li></ul></div><div class="span3"><h3>Projects</h3><ul><li><a href="http://github.hubspot.com/messenger">Messenger</a></li><li><a href="http://github.hubspot.com/facewall">Facewall</a></li><li><a href="http://github.hubspot.com/jquery-zoomer">jQuery Zoomer</a></li><li><a href="http://github.hubspot.com/humanize">Humanize</a></li><li><a href="http://github.hubspot.com/teeble">Teeble</a></li></ul></div><div class="span3"><h3>Development Team</h3><ul><li><a href="http://dev.hubspot.com">Home</a></li><li><a href="http://dev.hubspot.com/teams">Teams</a></li><li><a href="http://dev.hubspot.com/people">People</a></li><li><a href="http://dev.hubspot.com/jobs">Jobs</a></li></ul></div><div class="span3 hidden-phone"><h3>Developer API</h3><ul><li><a href="http://developers.hubspot.com/">Developer Documentation</a></li></ul></div></div></div><!-- Start of Async HubSpot Analytics Code -->
 <script type="text/javascript">
     (function(d,s,i,r) {
