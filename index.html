@@ -26,12 +26,12 @@
         </div>
     </div>
 </div><div class="hs-doc-marquee"><div class="hs-page-width-normal"><div class="row-fluid"><div class="span6"><h1>Mixen</h1><h3>HubSpot Open Source Project</h3></div><div class="span6"></div></div></div></div><div class="hs-page-width-normal"><div class="row-fluid"><div class="span3"><div class="hs-doc-sidenav"><nav><ul class="hs-public-sidenav"><li class="current-nav-item"><a href="">Home</a></li><li><b>Annotated source</b></li><li class=""><a target="_blank" href="docs/build/source/mixen.html">mixen.coffee</a></li><li class=""><a target="_blank" href="docs/build/source/mixen.spec.html">spec/mixen.spec.coffee</a></li></ul></nav></div></div><div class="span9"><div class="hs-doc-content"><h1>Mixen</h1>
-<p>Mixen lets you combine a whole bunch of classes together to build the exact class you need.</p>
+<p>Mixen lets you combine a whole bunch of classes together.</p>
 <p>In traditional CoffeeScript, each class can only extend a single other class, and you can&#39;t change that
 setup dynamically.  So if you want to be able to compose classes from smaller ones, you better only want to
 use each class one way.  It&#39;s easy to merge classes together, but then one module&#39;s methods will clobber
 method&#39;s with that same name before it.</p>
-<p>Mixen is a 2kb library that exposes a single function.  The function allows you to combine
+<p>The 2kb library only exposes a single function.  This function allows you to combine
 classes together in such a way that the <code>super</code> keyword will dynamically call the appropriate method in the
 next mixin you&#39;re using.</p>
 <p>It was created to solve the problem of &quot;we want to create a parent &#39;view&#39; or &#39;model&#39; or anything
