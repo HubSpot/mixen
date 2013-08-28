@@ -221,7 +221,8 @@ time to resolve super calls.</p>
         <span class="keyword">continue</span>
 
       <span class="keyword">do</span> (method, module) -&gt;
-        <span class="keyword">if</span> module::passSuper</pre></div></div>
+        out::[method] = (args...) -&gt;
+          module::[method].call @, args...</pre></div></div>
             
         </li>
         
@@ -232,22 +233,20 @@ time to resolve super calls.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>By default we modify how super works for our own purposes.
-This will cause problems if you want to use inheritance to
-define your modules and you want super to mean what it normally
-does.  The <code>passSuper</code> option will cause that clobbering to not
-occur, and will instead pass a reference to the next mixin to be
-called as the first argument to each method.</p>
+              <p>Coffeescript expands super calls into ModuleName.<strong>super</strong>.methodName</p>
+<p>Dynamically composing a bunch of inheriting classes out
+of the mixins seems like a good idea, but it doesn&#39;t work because
+CoffeeScript rewrites <strong>super</strong> calls statically based on the
+class super is in, so they would not respect these classes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          currentMethod = out::[method] ? identity
+            <div class="content"><div class='highlight'><pre>        module.__super__ ?= {}
+        module.__super__[method] ?= moduleSuper(module, method)
 
-          out::[method] = (args...) -&gt;
-            module::[method].call @, currentMethod, args...
-        <span class="keyword">else</span>
-          out::[method] = (args...) -&gt;
-            module::[method].call @, args...</pre></div></div>
+  out
+
+<span class="keyword">if</span> <span class="keyword">typeof</span> define <span class="keyword">is</span> <span class="string">'function'</span> <span class="keyword">and</span> define.amd</pre></div></div>
             
         </li>
         
@@ -257,30 +256,6 @@ called as the first argument to each method.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Coffeescript expands super calls into ModuleName.<strong>super</strong>.methodName</p>
-<p>Dynamically composing a bunch of inheriting classes out
-of the mixins seems like a good idea, but it doesn&#39;t work because
-CoffeeScript rewrites <strong>super</strong> calls statically based on the
-class super is in, so they would not respect these classes.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          module.__super__ ?= {}
-          module.__super__[method] ?= moduleSuper(module, method)
-
-  out
-
-<span class="keyword">if</span> <span class="keyword">typeof</span> define <span class="keyword">is</span> <span class="string">'function'</span> <span class="keyword">and</span> define.amd</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>AMD</p>
 
@@ -292,11 +267,11 @@ class super is in, so they would not respect these classes.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Node</p>
 
@@ -308,11 +283,11 @@ class super is in, so they would not respect these classes.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Global</p>
 
