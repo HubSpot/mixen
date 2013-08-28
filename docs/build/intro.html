@@ -153,24 +153,7 @@ explicitly prevent it.</p>
 <p>If you&#39;re not using CoffeeScript, it is possible to write the necessary js manually.  Replicating CoffeeScript&#39;s
 interitance mechanism is fairly complicated however.  It requires a robust extension mechanism, and replacing every
 <code>super</code> call used above with <code>ModuleName.__super__.methodName</code>.</p>
-<pre><code class="lang-javascript"><span class="keyword">var</span> AuthInContext, MyView, UserInContext,
-  __hasProp = {}.hasOwnProperty,
-  __extends = <span class="keyword">function</span>(child, parent){
-    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> parent) {
-      <span class="keyword">if</span> (__hasProp.call(parent, key))
-        child[key] = parent[key];
-    }
-
-    <span class="function"><span class="keyword">function</span> <span class="title">ctor</span><span class="params">()</span> {</span>
-      <span class="keyword">this</span>.constructor = child;
-    }
-
-    ctor.prototype = parent.prototype;
-    child.prototype = <span class="keyword">new</span> ctor();
-    child.__super__ = parent.prototype;
-
-    <span class="keyword">return</span> child;
-  };
+<pre><code class="lang-javascript"><span class="keyword">var</span> AuthInContext, MyView, UserInContext;
 
 UserInContext = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>}
 
@@ -204,6 +187,24 @@ MyView.prototype.getContext = <span class="keyword">function</span>(){
   context = MyView.__super__.getContext.apply(<span class="keyword">this</span>, arguments);
   context.x = <span class="number">2</span>;
   <span class="keyword">return</span> context;
+};</code></pre>
+<p>Where __extends is implemented as:</p>
+<pre><code class="lang-coffeescript"><span class="reserved">var</span> __hasProp = {}.hasOwnProperty,
+__extends = <span class="reserved">function</span>(child, parent){
+  <span class="keyword">for</span> (<span class="reserved">var</span> key <span class="keyword">in</span> parent) {
+    <span class="keyword">if</span> (__hasProp.call(parent, key))
+      child[key] = parent[key];
+  }
+
+  <span class="reserved">function</span> ctor() {
+    <span class="keyword">this</span>.constructor = child;
+  }
+
+  ctor.prototype = parent.prototype;
+  child.prototype = <span class="keyword">new</span> ctor();
+  child.__super__ = parent.prototype;
+
+  <span class="keyword">return</span> child;
 };</code></pre>
 <h3>Debugging</h3>
 <p>If it&#39;s not working the way you expect, it&#39;s usually because you forgot to call <code>super</code> in one of your methods.</p>
