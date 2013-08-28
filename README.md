@@ -107,7 +107,7 @@ class MyView extends Mixen(AuthInContext, UserInContext, Backbone.View)
     context
 ```
 
-### Mixining in Constructors
+### Mixening in Constructors
 
 Mixins can have constructors.  As long as the resultant class either does not have a constructor,
 or calls `super` in it's constructor, all of the mixins constructors will be called in the order
