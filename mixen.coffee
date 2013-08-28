@@ -1,7 +1,5 @@
-# Mixen is a tool for creating superclasses composed of a bunch of mixins.
-#
-# You register the mixins, and then you give mixen a list of which modules you'd like to use
-# and it builds the superclass dynamically.
+# Mixen lets you combine classes together as needed. With it you can build smaller,
+# easier to understand and more testable components, and more easily share code with others.
 
 indexOf = (haystack, needle) ->
   for stalk, i in haystack
