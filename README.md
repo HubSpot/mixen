@@ -201,7 +201,7 @@ interitance mechanism is fairly complicated however.  It requires a robust exten
 `super` call used above with `ModuleName.__super__.methodName`.
 
 ```javascript
-var AuthInContext, MyView, UserInContext, _ref,
+var AuthInContext, MyView, UserInContext,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent){
     for (var key in parent) {
@@ -263,4 +263,4 @@ Take a look at the tests for complete examples of how things should work.
 
 ### Support
 
-Mixen is tested in IE6+, Firefox 3+, Chrome 14+, Safari 4+, Opera 10+, Safari on iOS 3+, Android 2.2+, Node 0.6+.
+Mixen is tested in IE6+, Firefox 3+, Chrome 14+, Safari 4+, Opera 10+, Safari on iOS 3+, Android 2.2+ and Node 0.6+.
