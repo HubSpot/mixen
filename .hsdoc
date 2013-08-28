@@ -1,1 +1,1 @@
-source: "*.coffee"
+source: "{mixen.coffee,spec/mixen.spec.coffee}"
