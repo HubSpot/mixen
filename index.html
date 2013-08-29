@@ -70,8 +70,7 @@ You can also use AMD.</p>
 <p>Mixen adds one very important capability to inheritance, the ability to have multiple mixins all implement the same method.</p>
 <pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">CountSyncs</span></span>
   sync: -&gt;
-    <span class="property">@syncs</span> ?= <span class="number">0</span>
-    <span class="property">@syncs</span>++
+    <span class="property">@syncs</span> = (<span class="property">@syncs</span> <span class="keyword">or</span> <span class="number">0</span>) + <span class="number">1</span>
 
     <span class="keyword">super</span></code></pre>
 <pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">ThrottleSyncs</span></span>
@@ -160,9 +159,7 @@ inheritance mechanism is fairly complicated however.  It requires a robust exten
 UserInContext = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>}
 
 UserInContext.prototype.getContext = <span class="keyword">function</span>(){
-  <span class="keyword">var</span> context;
-
-  context = UserInContext.__super__.getContext.apply(<span class="keyword">this</span>, arguments) || {};
+  <span class="keyword">var</span> context = UserInContext.__super__.getContext.apply(<span class="keyword">this</span>, arguments) || {};
   context.user = <span class="string">'bob smith'</span>;
   <span class="keyword">return</span> context;
 };
@@ -170,9 +167,7 @@ UserInContext.prototype.getContext = <span class="keyword">function</span>(){
 AuthInContext = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>}
 
 AuthInContext.prototype.getContext = <span class="keyword">function</span>(){
-  <span class="keyword">var</span> context;
-
-  context = AuthInContext.__super__.getContext.apply(<span class="keyword">this</span>, arguments) || {};
+  <span class="keyword">var</span> context = AuthInContext.__super__.getContext.apply(<span class="keyword">this</span>, arguments) || {};
   context.auth = <span class="string">'logged-in'</span>;
   <span class="keyword">return</span> context;
 };
@@ -184,9 +179,7 @@ MyView = <span class="function"><span class="keyword">function</span> <span clas
 __extends(MyView, Mixen(AuthInContext, UserInContext, Backbone.View));
 
 MyView.prototype.getContext = <span class="keyword">function</span>(){
-  <span class="keyword">var</span> context;
-
-  context = MyView.__super__.getContext.apply(<span class="keyword">this</span>, arguments);
+  <span class="keyword">var</span> context = MyView.__super__.getContext.apply(<span class="keyword">this</span>, arguments);
   context.x = <span class="number">2</span>;
   <span class="keyword">return</span> context;
 };</code></pre>
