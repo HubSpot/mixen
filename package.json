@@ -2,7 +2,7 @@
   "name": "mixen",
   "version": "0.4.7",
   "description": "Combine Javascript classes on the fly",
-  "main": "mixer.js",
+  "main": "mixen.js",
   "directories": {
     "doc": "docs"
   },
