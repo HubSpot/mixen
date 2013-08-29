@@ -53,8 +53,9 @@ A mixin is just a class:
 ```coffeescript
 class OnlyRenderWithModel
   render: ->
-    if @model
-      super
+    return unless @model
+
+    super
 ```
 
 Any view who would like your method can now use Mixen to mix you in:
