@@ -289,9 +289,6 @@ Then, you can run `grunt watch` to have it watch the source files for changes.
 Run `grunt test` to ensure that the tests still pass.
 You can also open `spec/vendor/jasmine-1.3.1/SpecRunner.html` in your browser to check the tests (after doing a `grunt` build).
 
-If you develop a mixin others might find useful, please name the repo `mixen-contrib-<name>` and publish it on npm under the
-same name with the 'mixen' tag.
-
 Please let us know of any interesting Mixen's you make!
 
 ### Changelog
