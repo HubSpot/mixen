@@ -79,7 +79,7 @@ Mixen adds one very important capability to inheritance, the ability to have mul
 ```coffeescript
 class CountSyncs
   sync: ->
-    @syncs = @syncs ? 0
+    @syncs = (@syncs or 0) + 1
 
     super
 ```
