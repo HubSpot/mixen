@@ -1,5 +1,5 @@
 (function() {
-  var Mixen, identity, indexOf, moduleSuper, uniqueId,
+  var Mixen, indexOf, moduleSuper, uniqueId,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty;
 
@@ -12,10 +12,6 @@
       }
     }
     return -1;
-  };
-
-  identity = function(arg) {
-    return arg;
   };
 
   uniqueId = (function() {
@@ -31,6 +27,55 @@
   };
 
   Mixen.createdMixens = {};
+
+  Mixen.createMixen = function() {
+    var Out, method, mods, module, _fn, _i, _len, _ref, _ref1;
+    mods = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    Out = (function() {
+      function Out() {
+        var args, mod, _i, _len;
+        args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+        for (_i = 0, _len = mods.length; _i < _len; _i++) {
+          mod = mods[_i];
+          mod.apply(this, args);
+        }
+      }
+
+      return Out;
+
+    })();
+    Out.prototype._mixen_id = uniqueId();
+    Mixen.createdMixens[Out.prototype._mixen_id] = mods;
+    _ref = mods.slice(0).reverse();
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      module = _ref[_i];
+      _ref1 = module.prototype;
+      _fn = function(method, module) {
+        var _base;
+        Out.prototype[method] = function() {
+          var args, _ref2;
+          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          return (_ref2 = module.prototype[method]).call.apply(_ref2, [this].concat(__slice.call(args)));
+        };
+        if (module.__super__ == null) {
+          module.__super__ = {};
+        }
+        return (_base = module.__super__)[method] != null ? (_base = module.__super__)[method] : _base[method] = moduleSuper(module, method);
+      };
+      for (method in _ref1) {
+        if (!__hasProp.call(_ref1, method)) continue;
+        if (method === 'constructor') {
+          continue;
+        }
+        if (typeof module.prototype[method] !== 'function') {
+          Out.prototype[method] = module.prototype[method];
+          continue;
+        }
+        _fn(method, module);
+      }
+    }
+    return Out;
+  };
 
   moduleSuper = function(module, method) {
     return function() {
@@ -64,55 +109,6 @@
         return nextModule.prototype[method].apply(this, args);
       }
     };
-  };
-
-  Mixen.createMixen = function() {
-    var method, mods, module, out, _fn, _i, _len, _ref, _ref1;
-    mods = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    out = (function() {
-      function out() {
-        var args, mod, _i, _len;
-        args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-        for (_i = 0, _len = mods.length; _i < _len; _i++) {
-          mod = mods[_i];
-          mod.apply(this, args);
-        }
-      }
-
-      return out;
-
-    })();
-    out.prototype._mixen_id = uniqueId();
-    Mixen.createdMixens[out.prototype._mixen_id] = mods;
-    _ref = mods.slice(0).reverse();
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      module = _ref[_i];
-      _ref1 = module.prototype;
-      _fn = function(method, module) {
-        var _base;
-        out.prototype[method] = function() {
-          var args, _ref2;
-          args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-          return (_ref2 = module.prototype[method]).call.apply(_ref2, [this].concat(__slice.call(args)));
-        };
-        if (module.__super__ == null) {
-          module.__super__ = {};
-        }
-        return (_base = module.__super__)[method] != null ? (_base = module.__super__)[method] : _base[method] = moduleSuper(module, method);
-      };
-      for (method in _ref1) {
-        if (!__hasProp.call(_ref1, method)) continue;
-        if (method === 'constructor') {
-          continue;
-        }
-        if (typeof module.prototype[method] !== 'function') {
-          out.prototype[method] = module.prototype[method];
-          continue;
-        }
-        _fn(method, module);
-      }
-    }
-    return out;
   };
 
   if (typeof define === 'function' && define.amd) {
