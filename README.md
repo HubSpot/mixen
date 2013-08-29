@@ -9,7 +9,6 @@ class MyModel extends Mixen(Throttle, APIBinding, Validate, Backbone.Model)
   #
   # MyModel -> Throttle -> APIBinding -> Validate -> Backbone.Model
 
-
 class MyOtherModel extends Mixen(APIBinding, Backbone.Model)
   # Inheritance Chain:
   #
