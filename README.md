@@ -282,7 +282,7 @@ We welcome pull requests and discussion using GitHub Issues.
 To get setup for development, run this in the project directory:
 
 ```bash
-npm install --dev
+npm install
 ```
 
 Then, you can run `grunt watch` to have it watch the source files for changes.
