@@ -76,6 +76,19 @@ pre {
     line-height: 24px;
 }
 
+code {
+    font-size: 0.8em;
+    padding: 2px 4px;
+    background: #eee;
+}
+
+
+pre > code {
+    font-size: inherit;
+    background: transparent;
+    padding: 0;
+}
+
 .hs-doc-sidenav {
     margin-right: 20px;
     margin-bottom: 40px;
