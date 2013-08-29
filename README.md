@@ -290,7 +290,12 @@ Run `grunt test` to ensure that the tests still pass.
 You can also open `spec/vendor/jasmine-1.3.1/SpecRunner.html` in your browser to check the tests (after doing a `grunt` build).
 
 If you create a mixin which others might find useful, please name it `mixen-<type>-<name>`, where type identifies what sort
-of thing this mixin is designed to accentuate (leave type out of it's general-purpose).
+of thing this mixin is designed to extend (leave type out of it's general-purpose).
+
+Examples of good names:
+
+mixen-view-eventjanitor
+mixen-model-throttle
 
 ### Mixins
 
