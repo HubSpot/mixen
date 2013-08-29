@@ -146,10 +146,10 @@ that could have performance implications if you have lots of mixens.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Coffeescript expands super calls into ModuleName.<strong>super</strong>.methodName</p>
+              <p>Coffeescript expands super calls into <code>ModuleName.__super__.methodName</code></p>
 <p>Dynamically composing a bunch of inheriting classes out
 of the mixins seems like a good idea, but it doesn&#39;t work because
-CoffeeScript rewrites <strong>super</strong> calls statically based on the
+CoffeeScript rewrites <code>__super__</code> calls statically based on the
 class super is in, so they would not respect these classes.</p>
 
             </div>
