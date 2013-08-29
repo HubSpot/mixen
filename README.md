@@ -197,6 +197,8 @@ BaseView = Mixen(EventJanitor, Backbone.View)
 class MyView extends Mixen(SuperSpecialModule, BaseView)
 ```
 
+Diamond inheritance is not supported yet.
+
 ### Not Using CoffeeScript?
 
 If you're not using CoffeeScript, it is possible to write the necessary js manually.  Replicating CoffeeScript's
