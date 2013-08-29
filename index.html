@@ -58,8 +58,9 @@ You can also use AMD.</p>
 <p>A mixin is just a class:</p>
 <pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">OnlyRenderWithModel</span></span>
   render: -&gt;
-    <span class="keyword">if</span> <span class="property">@model</span>
-      <span class="keyword">super</span></code></pre>
+    <span class="keyword">return</span> <span class="keyword">unless</span> <span class="property">@model</span>
+
+    <span class="keyword">super</span></code></pre>
 <p>Any view who would like your method can now use Mixen to mix you in:</p>
 <pre><code class="lang-coffeescript"><span class="class"><span class="keyword">class</span> <span class="title">MyView</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">OnlyRenderWithModel</span>, <span class="title">Backbone</span>.<span class="title">View</span>)</span></code></pre>
 <p><strong>You can now replace your BaseModel&#39;s and BaseView&#39;s with modular components.</strong></p>
