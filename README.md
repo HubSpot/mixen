@@ -50,6 +50,8 @@ The Mixen function takes in any number of classes, and returns an object:
 MyObject = Mixen(Object1, Object2, ...)
 ```
 
+Skip down for a list of the publicly available mixins.
+
 ### Example
 
 A mixin is just a class:
@@ -293,6 +295,21 @@ npm install
 Then, you can run `grunt watch` to have it watch the source files for changes.
 Run `grunt test` to ensure that the tests still pass.
 You can also open `spec/vendor/jasmine-1.3.1/SpecRunner.html` in your browser to check the tests (after doing a `grunt` build).
+
+If you create a mixin which others might find useful, please name it `mixen-<type>-<name>`, where type identifies what sort
+of thing this mixin is designed to accentuate (leave type out of it's general-purpose).
+
+### Mixins
+
+#### Backbone
+
+##### View
+
+- [Event Janitor](http://github.com/HubSpot/mixen-view-eventjanitor)
+
+##### Model
+
+- [Throttle](http://github.com/HubSpot/mixen-model-throttle)
 
 Please let us know of any interesting Mixen's you make!
 
