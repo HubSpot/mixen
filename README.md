@@ -27,6 +27,8 @@ next mixin you're using.
 
 ### Usage
 
+Feel free to [start playing with Mixen](http://jsfiddle.net/4XgaR/7/) right now.
+
 On the browser include [mixen.min.js](https://github.com/HubSpot/Mixen/blob/master/mixen.min.js), and the `Mixen` function will be globally available.
 You can also use AMD.
 
@@ -68,8 +70,7 @@ You can now replace your BaseModels and BaseViews with modular components.
 
 ### Multiple Mixins Which Share Methods
 
-So far what you've seen is not anything which couldn't be done with class extension, or `_.extends`.
-Mixen adds one very important capability, the ability to have multiple mixins all implement the same method.
+Mixen adds one very important capability to inheritance, the ability to have multiple mixins all implement the same method.
 
 ```coffeescript
 class CountSyncs
@@ -100,7 +101,7 @@ class MyModel extends Mixen(ThrottleSyncs, CountSyncs, Backbone.Model)
 `MyModel` will both throttle it's sync's and keep track of it's sync count.
 
 Note that the count `CountSyncs` will change depending on if it is listed before or after
-`Throttle Syncs`.  All methods are resolved from left to right.  In other words,
+`ThrottleSyncs`.  All methods are resolved from left to right.  In other words,
 when you call `super`, you are calling the mixin to the current mixins right.
 
 #### The End of the Chain
@@ -296,4 +297,4 @@ Please let us know of any interesting Mixen's you make!
 
 ### Changelog
 
-0.4.7 - Initial public release
+- 0.5.0 - Initial public release
