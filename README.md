@@ -48,25 +48,22 @@ MyObject = Mixen(Object1, Object2, ...)
 
 ### Example
 
-At some point in everyone's Backbone journey, it seems necessary to create a
-personalized extension of Backbone.View which can do all sorts of special things.
-
-Mixen allows you to create such a View superclass which mixins modular components.
-
 A mixin is just a class:
 
 ```coffeescript
-class AwesomeMixin
-  myMethod: ->
+class OnlyRenderWithModel
+  render: ->
+    if @model
+      super
 ```
 
 Any view who would like your method can now use Mixen to mix you in:
 
 ```coffeescript
-class MyView extends Mixen(AwesomeMixin, Backbone.View)
+class MyView extends Mixen(OnlyRenderWithModel, Backbone.View)
 ```
 
-### Multiple Mixins Which Share a Method
+### Multiple Mixins Which Share Methods
 
 So far what you've seen is not anything which couldn't be done with class extension, or `_.extends`.
 Mixen adds one very important capability, the ability to have multiple mixins all implement the same method.
