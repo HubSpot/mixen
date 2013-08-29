@@ -1,73 +1,27 @@
-doctype 5
+extends base
 
-html
-  head
-    title= title
-    meta(http-equiv="content-type", content="text/html; charset=UTF-8")
-    link(type="text/css", rel="stylesheet", href="https://static2cdn.hubspot.com/style_guide/static-4.357/sass/style_guide_plus_layout.css")
-    link(type="text/css", rel="stylesheet", href="https://static2cdn.hubspot.com/style_guide_doc/static-1.443/sass/style_guide_doc.css")
-    link(type="text/css", rel="stylesheet", href="https://static.hubspot.com/bundles/navigation.css")
-    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js")
+block content
 
-    //- Executr
-    //- link(rel='stylesheet', type='text/css', media='screen', href='docs/build/resources/executr/lib/CodeMirror/codemirror.css')
-    //- link(rel='stylesheet', type='text/css', media='screen', href='docs/build/resources/executr/build/css/executr.css')
-    //- script(type='text/javascript', src='docs/build/resources/executr/lib/CodeMirror/codemirror.js')
-    //- script(type='text/javascript', src='docs/build/resources/executr/lib/CodeMirror/mode/coffeescript/coffeescript.js')
-    //- script(type='text/javascript', src='docs/build/resources/executr/lib/CodeMirror/mode/javascript/javascript.js')
-    //- script(type='text/javascript', src='docs/build/resources/executr/lib/coffee-script.js')
-    //- script(type='text/javascript', src='docs/build/resources/executr/lib/underscore.min.js')
-    //- script(type='text/javascript', src='docs/build/resources/executr/lib/js2coffee.min.js')
-    //- script(type='text/javascript', src='docs/build/resources/executr/build/js/executr.js')
-    //- script(type="text/javascript")
-    //-   $(function(){
-    //-     $('pre code').each(function(){
-    //-       var $code = $(this),
-    //-         lang = $code.get(0).className.substr('lang-'.length)
-    //-       ;
-    //-       $code.attr('data-type', lang)
-    //-       $code.attr('executable', true)
-    //-     });
-    //-     $('body').executr();
-    //-   });
+    .hs-doc-marquee
 
-    script(type="text/javascript", src="//use.typekit.net/jbn8qxr.js")
-    script(type="text/javascript")
-      try{Typekit.load();}catch(e){}
+        .hs-page-width-normal
 
-    each style in styles
-      link(rel="stylesheet", media="all", href=style)
+            .row-fluid
 
-  body
+                .span6
 
-    div#hs-nav-v3.nav-width-flex.placeholder-nav
-      div.hs-nav-section.main-nav
+                    h1= title
 
-    script(src="https://static.hubspot.com/final/js/navigation/navigation-external.js")
+                    //- TODO @zbloom let's get a legit subtitle here but use this as a fallback?
+                    h3 HubSpot Open Source Project
 
-    .page
+                .span6
 
-      section
-        a(href="https://tools.hubteam.com/BestJS") BestJS
+                    //- TODO @zbloom uncomment once projectName in the context
+                    //- p
+                    //-     | Fork on <a href="http://github.com/HubSpot/!{ projectName }">GitHub</a>
 
-      section
-        .page-header
-          h1= title
-        .row-fluid
-          .span3
-            h2 Docco-styled Source
+                    //- p
+                    //-     | Download <a href="http://github.com/HubSpot/!{ projectName }/archive/master.zip">ZIP</a>
 
-            ul
-              each file in files
-                li
-                  a(href=file.path)= file.displayPath
-
-            h2 Examples
-
-            ol
-              each example in examples
-                li
-                  a(href=example.path)= example.displayPath
-          .span9
-            h2 Readme
-            !{ intro }
+    include includes/navigation-and-content
