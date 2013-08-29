@@ -79,8 +79,7 @@ Mixen adds one very important capability to inheritance, the ability to have mul
 ```coffeescript
 class CountSyncs
   sync: ->
-    @syncs ?= 0
-    @syncs++
+    @syncs = (@syncs or 0) + 1
 
     super
 ```
@@ -216,9 +215,7 @@ var AuthInContext, MyView, UserInContext;
 UserInContext = function (){}
 
 UserInContext.prototype.getContext = function(){
-  var context;
-
-  context = UserInContext.__super__.getContext.apply(this, arguments) || {};
+  var context = UserInContext.__super__.getContext.apply(this, arguments) || {};
   context.user = 'bob smith';
   return context;
 };
@@ -226,9 +223,7 @@ UserInContext.prototype.getContext = function(){
 AuthInContext = function (){}
 
 AuthInContext.prototype.getContext = function(){
-  var context;
-
-  context = AuthInContext.__super__.getContext.apply(this, arguments) || {};
+  var context = AuthInContext.__super__.getContext.apply(this, arguments) || {};
   context.auth = 'logged-in';
   return context;
 };
@@ -240,9 +235,7 @@ MyView = function (){
 __extends(MyView, Mixen(AuthInContext, UserInContext, Backbone.View));
 
 MyView.prototype.getContext = function(){
-  var context;
-
-  context = MyView.__super__.getContext.apply(this, arguments);
+  var context = MyView.__super__.getContext.apply(this, arguments);
   context.x = 2;
   return context;
 };
