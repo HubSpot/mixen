@@ -2,13 +2,13 @@
   "name": "mixen",
   "version": "0.4.7",
   "description": "Combine Javascript classes on the fly",
-  "main": "static/coffee/mixen.coffee",
+  "main": "mixer.js",
   "directories": {
     "doc": "docs"
   },
   "repository": {
     "type": "git",
-    "url": "git@git.hubteam.com:HubSpot/Mixer.git"
+    "url": "git@github.com:HubSpot/Mixen.git"
   },
   "scripts": {
     "test": "grunt jasmine"
