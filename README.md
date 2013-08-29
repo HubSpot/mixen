@@ -63,6 +63,8 @@ Any view who would like your method can now use Mixen to mix you in:
 class MyView extends Mixen(OnlyRenderWithModel, Backbone.View)
 ```
 
+**You can now replace your BaseModel's and BaseView's with modular components.**
+
 ### Multiple Mixins Which Share Methods
 
 So far what you've seen is not anything which couldn't be done with class extension, or `_.extends`.
