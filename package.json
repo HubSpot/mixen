@@ -28,9 +28,9 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "coffee-script": "~1.6.3"
   },
   "devDependencies": {
+    "coffee-script": "~1.6.3",
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-coffee": "~0.7.0",
