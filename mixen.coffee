@@ -48,11 +48,11 @@ Mixen.createMixen = (mods...) ->
         Out::[method] = (args...) ->
           module::[method].call @, args...
 
-        # Coffeescript expands super calls into ModuleName.__super__.methodName
+        # Coffeescript expands super calls into `ModuleName.__super__.methodName`
         #
         # Dynamically composing a bunch of inheriting classes out
         # of the mixins seems like a good idea, but it doesn't work because
-        # CoffeeScript rewrites __super__ calls statically based on the
+        # CoffeeScript rewrites `__super__` calls statically based on the
         # class super is in, so they would not respect these classes.
         module.__super__ ?= {}
         module.__super__[method] ?= moduleSuper(module, method)
