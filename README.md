@@ -29,7 +29,7 @@ next mixin you're using.
 
 Feel free to [start playing with Mixen](http://jsfiddle.net/4XgaR/7/) right now.
 
-On the browser include `mixen.min.js`, and the `Mixen` function will be globally available.
+On the browser include [mixen.min.js](https://github.com/HubSpot/mixen/blob/v0.5.0/mixen.min.js), and the `Mixen` function will be globally available.
 You can also use AMD.
 
 On node:
