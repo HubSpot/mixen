@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>mixen.spec.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="mixen.html">
+                mixen.coffee
+              </a>
+            
+              
+              <a class="source" href="mixen.spec.html">
+                mixen.spec.coffee
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>mixen.spec.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>describe <span class="string">'Mixen'</span>, -&gt;
+  it <span class="string">'should be defined'</span>, -&gt;
+    expect(Mixen).toBeDefined()
+   
+  it <span class="string">'should be possible to compose a class'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
+      x: -&gt; <span class="number">3</span>
+
+    X = Mixen(MyModule)
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x()).toBe(<span class="number">3</span>)
+
+  it <span class="string">'should be possible to compose multiple classes together'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      x: -&gt; (<span class="keyword">super</span> ? <span class="number">0</span>) + <span class="number">5</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module2</span></span>
+      x: -&gt; (<span class="keyword">super</span> ? <span class="number">0</span>) + <span class="number">2</span>
+
+    X = Mixen(Module1, Module2)
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x()).toBe(<span class="number">7</span>)
+
+  it <span class="string">'should be possible to pass through a method from a mixin'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
+      x: -&gt; <span class="number">3</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">X</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">MyModule</span>)</span>
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x()).toBe(<span class="number">3</span>)
+
+  it <span class="string">'should pass references to the previous function'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
+      x: (arg) -&gt;
+        (<span class="keyword">super</span>(arg) ? <span class="number">0</span>) + <span class="number">2</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">X</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">MyModule</span>)</span>
+      x: (arg) -&gt; <span class="keyword">super</span>(arg) + <span class="number">8</span>
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x(<span class="number">0</span>)).toBe(<span class="number">10</span>)
+
+  it <span class="string">'should end up calling the parent classes methods'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Parent</span></span>
+      x: (a) -&gt; a + <span class="number">2</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">X</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Parent</span>)</span>
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x(<span class="number">2</span>)).toBe(<span class="number">4</span>)
+
+  it <span class="string">'should pass references to the chain of previous functions in the order defined'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      x: (arg) -&gt;
+        (<span class="keyword">super</span> ? <span class="number">5</span>) + arg + <span class="string">'1'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module2</span></span>
+      x: (arg) -&gt;
+        (<span class="keyword">super</span> ? <span class="number">4</span>) + arg + <span class="string">'2'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">X</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module2</span>, <span class="title">Module1</span>)</span>
+      x: (arg) -&gt; <span class="keyword">super</span> + arg + <span class="string">'0'</span>
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x(<span class="string">'-'</span>)).toBe(<span class="string">'5-1-2-0'</span>)
+
+  it <span class="string">'should call all constructors in the right order'</span>, -&gt;
+    order = <span class="string">''</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      constructor: -&gt;
+        expect(@ <span class="keyword">instanceof</span> Module).toBe(<span class="literal">true</span>)
+
+        order += <span class="string">'1'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module2</span></span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module3</span></span>
+      constructor: -&gt;
+        expect(@ <span class="keyword">instanceof</span> Module).toBe(<span class="literal">true</span>)
+
+        order += <span class="string">'3'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module1</span>, <span class="title">Module2</span>, <span class="title">Module3</span>)</span>
+      constructor: -&gt;
+        <span class="keyword">super</span>
+
+        expect(@ <span class="keyword">instanceof</span> Module).toBe(<span class="literal">true</span>)
+
+        order += <span class="string">'4'</span>
+
+    inst = <span class="keyword">new</span> Module
+
+    expect(order).toBe(<span class="string">'134'</span>)
+
+  it <span class="string">'should not call mixen constructors if super is not called'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      constructor: -&gt;
+        expect(<span class="literal">true</span>).toBe(<span class="literal">false</span>)
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module1</span>)</span>
+      constructor: -&gt;
+        expect(<span class="literal">true</span>).toBe(<span class="literal">true</span>)
+
+    inst = <span class="keyword">new</span> Module
+
+  it <span class="string">'should call mixen constructors if no constructor is defined'</span>, -&gt;
+    called = <span class="literal">false</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      constructor: -&gt;
+        called = <span class="literal">true</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module1</span>)</span>
+
+    inst = <span class="keyword">new</span> Module
+
+    expect(called).toBe(<span class="literal">true</span>)
+
+  it <span class="string">'should pass through non-function properties'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      property: <span class="number">4</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">X</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module1</span>)</span>
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.property).toBe(<span class="number">4</span>)
+
+  it <span class="string">'should handle multiple mixins'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      x: -&gt; <span class="number">3</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module2</span></span>
+      y: -&gt; <span class="number">5</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">X</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module1</span>, <span class="title">Module2</span>)</span>
+
+    inst = <span class="keyword">new</span> X
+
+    expect(inst.x).toBeDefined()
+    expect(inst.y).toBeDefined()
+    expect(inst.x()).toBe(<span class="number">3</span>)
+    expect(inst.y()).toBe(<span class="number">5</span>)
+
+  it <span class="string">'should be able to handle multiple mixens existing at once'</span>, -&gt;
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      x: -&gt; <span class="string">'1'</span> + (<span class="keyword">super</span> ? <span class="string">''</span>)
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module2</span></span>
+      x: -&gt; <span class="string">'2'</span> + (<span class="keyword">super</span> ? <span class="string">''</span>)
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module3</span></span>
+      x: -&gt; <span class="string">'3'</span> + (<span class="keyword">super</span> ? <span class="string">''</span>)
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module4</span></span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module5</span></span>
+      x: -&gt; <span class="string">'5'</span> + (<span class="keyword">super</span> ? <span class="string">''</span>)
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module6</span></span>
+      x: -&gt; <span class="string">'6'</span> + (<span class="keyword">super</span> ? <span class="string">''</span>)
+
+    <span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module4</span>, <span class="title">Module3</span>, <span class="title">Module1</span>)</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module5</span>, <span class="title">Module3</span>, <span class="title">Module2</span>)</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module6</span>, <span class="title">Module3</span>, <span class="title">Module1</span>)</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">D</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module6</span>, <span class="title">Module3</span>, <span class="title">Module1</span>)</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">E</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module6</span>, <span class="title">Module4</span>, <span class="title">Module5</span>)</span>
+    
+    <span class="class"><span class="keyword">class</span> <span class="title">F</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module1</span>, <span class="title">Module6</span>, <span class="title">Module5</span>)</span>
+
+    a = <span class="keyword">new</span> A
+    b = <span class="keyword">new</span> B
+    d = <span class="keyword">new</span> D
+    c = <span class="keyword">new</span> C
+    e2 = <span class="keyword">new</span> E
+    f = <span class="keyword">new</span> F
+    e1 = <span class="keyword">new</span> E
+
+    expect(a.x()).toBe(<span class="string">'31'</span>)
+    expect(b.x()).toBe(<span class="string">'532'</span>)
+    expect(e1.x()).toBe(<span class="string">'65'</span>)
+    expect(c.x()).toBe(<span class="string">'631'</span>)
+    expect(d.x()).toBe(<span class="string">'631'</span>)
+    expect(e2.x()).toBe(<span class="string">'65'</span>)
+    expect(f.x()).toBe(<span class="string">'165'</span>)
+
+  it <span class="string">'should be able to mixin mixens'</span>, -&gt;
+    order = <span class="string">''</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module1</span></span>
+      constructor: -&gt;
+        order += <span class="string">'-1-'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module2</span></span>
+      constructor: -&gt;
+        order += <span class="string">'-2-'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module12</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module1</span>, <span class="title">Module2</span>)</span>
+      constructor: -&gt;
+        <span class="keyword">super</span>
+        order += <span class="string">'-12-'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module3</span></span>
+      constructor: -&gt;
+        order += <span class="string">'-3-'</span>
+
+    <span class="class"><span class="keyword">class</span> <span class="title">Module312</span> <span class="keyword">extends</span> <span class="title">Mixen</span>(<span class="title">Module3</span>, <span class="title">Module12</span>)</span>
+      constructor: -&gt;
+        <span class="keyword">super</span>
+        order += <span class="string">'-312-'</span>
+
+    inst = <span class="keyword">new</span> Module312
+
+    expect(order).toBe(<span class="string">'-3--1--2--12--312-'</span>)</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
