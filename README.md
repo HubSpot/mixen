@@ -1,8 +1,6 @@
 Mixen
 ==================== 
-<iframe src="http://ghbtns.com/github-btn.html?user=HubSpot&repo=mixen&type=watch&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
-  
+
 Mixen lets you combine classes on the fly.  With it you can build smaller, easier to understand and
 more testable components, and more easily share code with others.  **It does not just merge the prototypes.**
 
