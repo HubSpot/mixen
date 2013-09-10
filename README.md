@@ -314,3 +314,4 @@ Please let us know of any interesting Mixen's you make!
 ### Changelog
 
 - 0.5.0 - Initial public release
+- 0.5.1 - Fix bug with interoperability with Backbone.extend
