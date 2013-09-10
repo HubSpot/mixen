@@ -68,8 +68,7 @@ uniqueId = <span class="keyword">do</span> -&gt;
 
 Mixen.createdMixens = {}
 
-Mixen.<span class="function"><span class="title">createMixen</span></span> = (mods...) -&gt;
-  <span class="class"><span class="keyword">class</span> <span class="title">Out</span></span></pre></div></div>
+Mixen.<span class="function"><span class="title">createMixen</span></span> = (mods...) -&gt;</pre></div></div>
             
         </li>
         
@@ -80,14 +79,18 @@ Mixen.<span class="function"><span class="title">createMixen</span></span> = (mo
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>If the extending class calls <code>super</code>, or doesn&#39;t have a constructor,
-this will be called to call each mixin&#39;s constructor.</p>
+              <p>Since a single mixin module can be used multiple times, we need to
+store the id of this instance on the outputted object, so we can
+figure out which modules were included with it when it comes
+time to resolve super calls.</p>
+<p>We could also iterate over every mixen we&#39;ve created so far, but
+that could have performance implications if you have lots of mixens.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    constructor: (args...) -&gt;
-      <span class="keyword">for</span> mod <span class="keyword">in</span> mods
-        mod.apply @, args</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  Last = Object
+  <span class="keyword">for</span> module <span class="keyword">in</span> mods.slice(<span class="number">0</span>).reverse()
+    <span class="class"><span class="keyword">class</span> <span class="title">Inst</span> <span class="keyword">extends</span> <span class="title">Last</span></span></pre></div></div>
             
         </li>
         
@@ -98,24 +101,23 @@ this will be called to call each mixin&#39;s constructor.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Since a single mixin module can be used multiple times, we need to
-store the id of this instance on the outputted object, so we can
-figure out which modules were included with it when it comes
-time to resolve super calls.</p>
-<p>We could also iterate over every mixen we&#39;ve created so far, but
-that could have performance implications if you have lots of mixens.</p>
+              <p>If the extending class calls <code>super</code>, or doesn&#39;t have a constructor,
+this will be called to call each mixin&#39;s constructor.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  Out::_mixen_id = uniqueId()
+            <div class="content"><div class='highlight'><pre>      constructor: (args...) -&gt;
+        <span class="keyword">for</span> mod <span class="keyword">in</span> mods
+          mod.apply @, args
 
-  Mixen.createdMixens[Out::_mixen_id] = mods
+    Last = Inst
 
-  <span class="keyword">for</span> module <span class="keyword">in</span> mods.slice(<span class="number">0</span>).reverse()
+    <span class="keyword">for</span> method <span class="keyword">of</span> module::
+      Inst::[method] = module::[method]
+
     <span class="keyword">for</span> own method <span class="keyword">of</span> module::
       <span class="keyword">continue</span> <span class="keyword">if</span> method <span class="keyword">is</span> <span class="string">'constructor'</span>
-
-      <span class="keyword">if</span> <span class="keyword">typeof</span> module::[method] <span class="keyword">isnt</span> <span class="string">'function'</span></pre></div></div>
+      <span class="keyword">continue</span> <span class="keyword">if</span> <span class="keyword">typeof</span>(module::[method]) <span class="keyword">isnt</span> <span class="string">'function'</span></pre></div></div>
             
         </li>
         
@@ -126,16 +128,24 @@ that could have performance implications if you have lots of mixens.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Non-function attributes just get copied onto the resultant object</p>
+              <p>Coffeescript expands super calls into <code>ModuleName.__super__.methodName</code></p>
+<p>Dynamically composing a bunch of inheriting classes out
+of the mixins seems like a good idea, but it doesn&#39;t work because
+CoffeeScript rewrites <code>__super__</code> calls statically based on the
+class super is in, so they would not respect these classes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        Out::[method] = module::[method]
-        <span class="keyword">continue</span>
+            <div class="content"><div class='highlight'><pre>      module.__super__ ?= {}
+      module.__super__[method] ?= moduleSuper(module, method)
 
-      <span class="keyword">do</span> (method, module) -&gt;
-        Out::[method] = (args...) -&gt;
-          module::[method].call @, args...</pre></div></div>
+  Last::_mixen_id = uniqueId()
+
+  Mixen.createdMixens[Last::_mixen_id] = mods
+
+  Last
+
+<span class="function"><span class="title">moduleSuper</span></span> = (module, method) -&gt;</pre></div></div>
             
         </li>
         
@@ -146,20 +156,17 @@ that could have performance implications if you have lots of mixens.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Coffeescript expands super calls into <code>ModuleName.__super__.methodName</code></p>
-<p>Dynamically composing a bunch of inheriting classes out
-of the mixins seems like a good idea, but it doesn&#39;t work because
-CoffeeScript rewrites <code>__super__</code> calls statically based on the
-class super is in, so they would not respect these classes.</p>
+              <p>This is called when super gets called in one of our mixin&#39;ed modules.</p>
+<p>It resolves what the next module in the module list which has
+this method defined and calls that method.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        module.__super__ ?= {}
-        module.__super__[method] ?= moduleSuper(module, method)
+            <div class="content"><div class='highlight'><pre>  (args...) -&gt;
+    current = <span class="property">@constructor</span>::
 
-  Out
-
-<span class="function"><span class="title">moduleSuper</span></span> = (module, method) -&gt;</pre></div></div>
+    id = <span class="literal">null</span>
+    <span class="keyword">while</span> <span class="literal">true</span></pre></div></div>
             
         </li>
         
@@ -169,26 +176,6 @@ class super is in, so they would not respect these classes.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>This is called when super gets called in one of our mixin&#39;ed modules.</p>
-<p>It resolves what the next module in the module list which has
-this method defined and calls that method.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  (args...) -&gt;
-    current = <span class="property">@constructor</span>::
-    id = <span class="literal">null</span>
-    <span class="keyword">while</span> <span class="literal">true</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Navigate up the inheritance tree looking for the object we created
 when we built the mixen.  It will have the id we need to find the other
@@ -204,11 +191,11 @@ modules.</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>When we find an id it means <code>current</code> is a Mixen</p>
 
@@ -229,11 +216,11 @@ modules.</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Look through the remaining modules for the next one which implements
 the method we&#39;re calling.</p>
@@ -252,11 +239,11 @@ the method we&#39;re calling.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>AMD</p>
 
@@ -268,11 +255,11 @@ the method we&#39;re calling.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Node</p>
 
@@ -284,11 +271,11 @@ the method we&#39;re calling.</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>Global</p>
 

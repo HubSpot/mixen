@@ -54,7 +54,7 @@
             <div class="content"><div class='highlight'><pre>describe <span class="string">'Mixen'</span>, -&gt;
   it <span class="string">'should be defined'</span>, -&gt;
     expect(Mixen).toBeDefined()
-   
+
   it <span class="string">'should be possible to compose a class'</span>, -&gt;
     <span class="class"><span class="keyword">class</span> <span class="title">MyModule</span></span>
       x: -&gt; <span class="number">3</span>
@@ -125,6 +125,23 @@
     inst = <span class="keyword">new</span> X
 
     expect(inst.x(<span class="string">'-'</span>)).toBe(<span class="string">'5-1-2-0'</span>)
+
+  it <span class="string">'should play nice with backbone extend'</span>, -&gt;
+    X = Backbone.Model.extend({
+      x: -&gt; <span class="number">3</span>
+      y: -&gt; <span class="number">12</span>
+    })
+
+    Y = X.extend({
+      x: -&gt; <span class="number">6</span>
+    })
+
+    Z = Mixen(Y)
+
+    expect((<span class="keyword">new</span> Z).x()).toBe(<span class="number">6</span>)
+    expect((<span class="keyword">new</span> Z).y()).toBe(<span class="number">12</span>)
+    expect((<span class="keyword">new</span> Z).idAttribute).toBe(<span class="string">'id'</span>)
+    expect((<span class="keyword">new</span> Z).cid).toBe(<span class="string">'c4'</span>)
 
   it <span class="string">'should call all constructors in the right order'</span>, -&gt;
     order = <span class="string">''</span>

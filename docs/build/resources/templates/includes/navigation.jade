@@ -8,17 +8,18 @@
         a(href=linkPrefix) Home
 
       each group, name in docs
-        li
-          b= name
+        if name
+          li
+            b= name
 
         each doc in group
-          li(class=(doc.link == path ? 'current-nav-item' : ''))
-            a(href=linkPrefix + doc.path)= doc.displayPath
+          li(class=(doc.path == path ? 'current-nav-item' : ''))
+            a(href=linkPrefix + doc.link)= doc.displayPath
 
       if sources.length
         li
           b Annotated source
 
         each file in sources
-          li(class=(file.link == path ? 'current-nav-item' : ''))
-            a(target="_blank", href=linkPrefix + file.path)= file.displayPath
+          li
+            a(target="_blank", href=linkPrefix + file.link)= file.displayPath
