@@ -17,13 +17,6 @@ Mixen = ->
 Mixen.createdMixens = {}
 
 Mixen.createMixen = (mods...) ->
-  class Out
-    # If the extending class calls `super`, or doesn't have a constructor,
-    # this will be called to call each mixin's constructor.
-    constructor: (args...) ->
-      for mod in mods
-        mod.apply @, args
-      
   # Since a single mixin module can be used multiple times, we need to
   # store the id of this instance on the outputted object, so we can
   # figure out which modules were included with it when it comes
@@ -31,33 +24,38 @@ Mixen.createMixen = (mods...) ->
   #
   # We could also iterate over every mixen we've created so far, but
   # that could have performance implications if you have lots of mixens.
-  Out::_mixen_id = uniqueId()
-
-  Mixen.createdMixens[Out::_mixen_id] = mods
-
+  Last = Object
   for module in mods.slice(0).reverse()
+    class Inst extends Last
+      # If the extending class calls `super`, or doesn't have a constructor,
+      # this will be called to call each mixin's constructor.
+      constructor: (args...) ->
+        for mod in mods
+          mod.apply @, args
+
+    Last = Inst
+
+    for method of module::
+      Inst::[method] = module::[method]
+
     for own method of module::
       continue if method is 'constructor'
+      continue if typeof(module::[method]) isnt 'function'
 
-      if typeof module::[method] isnt 'function'
-        # Non-function attributes just get copied onto the resultant object
-        Out::[method] = module::[method]
-        continue
+      # Coffeescript expands super calls into `ModuleName.__super__.methodName`
+      #
+      # Dynamically composing a bunch of inheriting classes out
+      # of the mixins seems like a good idea, but it doesn't work because
+      # CoffeeScript rewrites `__super__` calls statically based on the
+      # class super is in, so they would not respect these classes.
+      module.__super__ ?= {}
+      module.__super__[method] ?= moduleSuper(module, method)
 
-      do (method, module) ->
-        Out::[method] = (args...) ->
-          module::[method].call @, args...
+  Last::_mixen_id = uniqueId()
 
-        # Coffeescript expands super calls into `ModuleName.__super__.methodName`
-        #
-        # Dynamically composing a bunch of inheriting classes out
-        # of the mixins seems like a good idea, but it doesn't work because
-        # CoffeeScript rewrites `__super__` calls statically based on the
-        # class super is in, so they would not respect these classes.
-        module.__super__ ?= {}
-        module.__super__[method] ?= moduleSuper(module, method)
+  Mixen.createdMixens[Last::_mixen_id] = mods
 
-  Out
+  Last
 
 moduleSuper = (module, method) ->
   # This is called when super gets called in one of our mixin'ed modules.
@@ -66,6 +64,7 @@ moduleSuper = (module, method) ->
   # this method defined and calls that method.
   (args...) ->
     current = @constructor::
+
     id = null
     while true
       # Navigate up the inheritance tree looking for the object we created

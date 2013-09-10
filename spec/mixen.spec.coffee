@@ -1,7 +1,7 @@
 describe 'Mixen', ->
   it 'should be defined', ->
     expect(Mixen).toBeDefined()
-   
+
   it 'should be possible to compose a class', ->
     class MyModule
       x: -> 3
@@ -72,6 +72,23 @@ describe 'Mixen', ->
     inst = new X
 
     expect(inst.x('-')).toBe('5-1-2-0')
+
+  it 'should play nice with backbone extend', ->
+    X = Backbone.Model.extend({
+      x: -> 3
+      y: -> 12
+    })
+
+    Y = X.extend({
+      x: -> 6
+    })
+
+    Z = Mixen(Y)
+
+    expect((new Z).x()).toBe(6)
+    expect((new Z).y()).toBe(12)
+    expect((new Z).idAttribute).toBe('id')
+    expect((new Z).cid).toBe('c4')
 
   it 'should call all constructors in the right order', ->
     order = ''

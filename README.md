@@ -1,8 +1,6 @@
 Mixen
 ==================== 
-<iframe src="http://ghbtns.com/github-btn.html?user=HubSpot&repo=mixen&type=watch&size=large"
-  allowtransparency="true" frameborder="0" scrolling="0" width="170" height="30"></iframe>
-  
+
 Mixen lets you combine classes on the fly.  With it you can build smaller, easier to understand and
 more testable components, and more easily share code with others.  **It does not just merge the prototypes.**
 
@@ -314,3 +312,4 @@ Please let us know of any interesting Mixen's you make!
 ### Changelog
 
 - 0.5.0 - Initial public release
+- 0.5.1 - Fix bug with interoperability with Backbone.extend

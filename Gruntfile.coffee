@@ -23,7 +23,12 @@ module.exports = (grunt) ->
     jasmine:
       options:
         specs: ['spec/mixen.spec.js']
-      src: 'mixen.js'
+      src: [
+        'spec/vendor/jquery-1.10.2/jquery.js',
+        'spec/vendor/underscore-1.5.2/underscore.js',
+        'spec/vendor/backbone-1.0.0/backbone.js',
+        'mixen.js'
+      ]
 
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-uglify'

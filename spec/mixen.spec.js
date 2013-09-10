@@ -175,6 +175,27 @@
       inst = new X;
       return expect(inst.x('-')).toBe('5-1-2-0');
     });
+    it('should play nice with backbone extend', function() {
+      var X, Y, Z;
+      X = Backbone.Model.extend({
+        x: function() {
+          return 3;
+        },
+        y: function() {
+          return 12;
+        }
+      });
+      Y = X.extend({
+        x: function() {
+          return 6;
+        }
+      });
+      Z = Mixen(Y);
+      expect((new Z).x()).toBe(6);
+      expect((new Z).y()).toBe(12);
+      expect((new Z).idAttribute).toBe('id');
+      return expect((new Z).cid).toBe('c4');
+    });
     it('should call all constructors in the right order', function() {
       var Module, Module1, Module2, Module3, inst, order;
       order = '';
