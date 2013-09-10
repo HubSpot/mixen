@@ -24,7 +24,7 @@ module.exports = (grunt) ->
       options:
         specs: ['spec/mixen.spec.js']
       src: [
-        'spec/vendor/jquery-1.10.2.js',
+        'spec/vendor/jquery-1.10.2/jquery.js',
         'spec/vendor/underscore-1.5.2/underscore.js',
         'spec/vendor/backbone-1.0.0/backbone.js',
         'mixen.js'
