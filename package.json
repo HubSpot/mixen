@@ -1,6 +1,6 @@
 {
   "name": "mixen",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Combine Javascript classes on the fly",
   "main": "mixen.js",
   "directories": {
