@@ -24,7 +24,7 @@ Mixen.createMixen = (mods...) ->
   #
   # We could also iterate over every mixen we've created so far, but
   # that could have performance implications if you have lots of mixens.
-  Last = Object
+  Last = mods[mods.length - 1]
   for module in mods.slice(0).reverse()
     class Inst extends Last
       # If the extending class calls `super`, or doesn't have a constructor,

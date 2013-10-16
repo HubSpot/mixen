@@ -32,7 +32,7 @@
   Mixen.createMixen = function() {
     var Inst, Last, method, mods, module, _base, _i, _len, _ref, _ref1;
     mods = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    Last = Object;
+    Last = mods[mods.length - 1];
     _ref = mods.slice(0).reverse();
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       module = _ref[_i];
