@@ -48,7 +48,15 @@ Mixen.createMixen = (mods...) ->
       # of the mixins seems like a good idea, but it doesn't work because
       # CoffeeScript rewrites `__super__` calls statically based on the
       # class super is in, so they would not respect these classes.
-      module.__super__ ?= {}
+
+      if module.__super__?
+        # We don't want to mutate the actual module's super, as we could be messing with some
+        # random unassuming class
+        class NewSuper extends module.__super__
+        module.__super__ = NewSuper
+      else
+        module.__super__ = {}
+
       module.__super__[method] ?= moduleSuper(module, method)
 
   Last::_mixen_id = uniqueId()

@@ -30,7 +30,7 @@
   Mixen.createdMixens = {};
 
   Mixen.createMixen = function() {
-    var Inst, Last, method, mods, module, _base, _i, _len, _ref, _ref1;
+    var Inst, Last, NewSuper, method, mods, module, _base, _i, _len, _ref, _ref1, _ref2;
     mods = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     Last = mods[mods.length - 1];
     _ref = mods.slice(0).reverse();
@@ -64,7 +64,20 @@
         if (typeof module.prototype[method] !== 'function') {
           continue;
         }
-        if (module.__super__ == null) {
+        if (module.__super__ != null) {
+          NewSuper = (function(_super) {
+            __extends(NewSuper, _super);
+
+            function NewSuper() {
+              _ref2 = NewSuper.__super__.constructor.apply(this, arguments);
+              return _ref2;
+            }
+
+            return NewSuper;
+
+          })(module.__super__);
+          module.__super__ = NewSuper;
+        } else {
           module.__super__ = {};
         }
         if ((_base = module.__super__)[method] == null) {
