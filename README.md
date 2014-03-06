@@ -241,7 +241,7 @@ MyView.prototype.getContext = function(){
 
 Where `__extends` is implemented as:
 
-```coffeescript
+```javascript
 var __hasProp = {}.hasOwnProperty,
 __extends = function(child, parent){
   for (var key in parent) {
