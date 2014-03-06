@@ -200,15 +200,14 @@ describe 'Mixen', ->
     class F extends Mixen(Module1, Module6, Module5)
 
     a = new A
-    #b = new B
-    #d = new D
-    #c = new C
-    #e2 = new E
-    #f = new F
-    #e1 = new E
+    b = new B
+    d = new D
+    c = new C
+    e2 = new E
+    f = new F
+    e1 = new E
 
     expect(a.x()).toBe('31')
-    return
     expect(b.x()).toBe('532')
     expect(e1.x()).toBe('65')
     expect(c.x()).toBe('631')

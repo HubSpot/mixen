@@ -349,7 +349,7 @@
       return expect(inst.y()).toBe(5);
     });
     it('should be able to handle multiple mixens existing at once', function() {
-      var A, B, C, D, E, F, Module1, Module2, Module3, Module4, Module5, Module6, a, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+      var A, B, C, D, E, F, Module1, Module2, Module3, Module4, Module5, Module6, a, b, c, d, e1, e2, f, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
       Module1 = (function() {
         function Module1() {}
 
@@ -478,8 +478,13 @@
 
       })(Mixen(Module1, Module6, Module5));
       a = new A;
+      b = new B;
+      d = new D;
+      c = new C;
+      e2 = new E;
+      f = new F;
+      e1 = new E;
       expect(a.x()).toBe('31');
-      return;
       expect(b.x()).toBe('532');
       expect(e1.x()).toBe('65');
       expect(c.x()).toBe('631');
