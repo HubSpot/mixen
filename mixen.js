@@ -119,7 +119,6 @@
       pos = indexOf(modules, module);
       nextModule = null;
       if (pos === -1) {
-        console.error("Something went wrong in Mixen, the appropriate mixin couldn't be found");
         return;
       }
       while (pos++ < modules.length - 1) {

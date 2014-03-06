@@ -85,9 +85,7 @@ moduleSuper = (module, method) ->
     pos = indexOf modules, module
     nextModule = null
 
-    if pos is -1
-      console.error "Something went wrong in Mixen, the appropriate mixin couldn't be found"
-      return
+    return if pos is -1
 
     while pos++ < modules.length - 1
       # Look through the remaining modules for the next one which implements
