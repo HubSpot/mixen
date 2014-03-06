@@ -1,5 +1,5 @@
 (function() {
-  var Mixen, indexOf, moduleSuper, uniqueId,
+  var Mixen, indexOf, moduleSuper, stack, uniqueId,
     __slice = [].slice,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
@@ -26,6 +26,8 @@
   Mixen = function() {
     return Mixen.createMixen.apply(Mixen, arguments);
   };
+
+  stack = [];
 
   Mixen.createMixen = function() {
     var Inst, Last, NewSuper, k, method, mods, module, v, _base, _fn, _i, _len, _ref, _ref1, _ref2, _ref3;
@@ -54,9 +56,9 @@
         return Inst.__super__[k] = function() {
           var args, ret;
           args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-          Last._mixen_stack.unshift(module);
+          stack.unshift(module);
           ret = v.apply(this, args);
-          Last._mixen_stack.shift();
+          stack.shift();
           return ret;
         };
       };
@@ -103,7 +105,6 @@
       }
     }
     Last._mixen_modules = mods;
-    Last._mixen_stack = [];
     return Last;
   };
 
@@ -111,7 +112,7 @@
     return function() {
       var args, modules, nextModule, pos, _ref;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      modules = ((_ref = this.constructor._mixen_stack[0]) != null ? _ref._mixen_modules : void 0) || this.constructor._mixen_modules;
+      modules = ((_ref = stack[0]) != null ? _ref._mixen_modules : void 0) || this.constructor._mixen_modules;
       if (modules == null) {
         return;
       }

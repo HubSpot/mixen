@@ -14,6 +14,8 @@ uniqueId = do ->
 Mixen = ->
   Mixen.createMixen arguments...
 
+stack = []
+
 Mixen.createMixen = (mods...) ->
   # Since a single mixin module can be used multiple times, we need to
   # store the id of this instance on the outputted object, so we can
@@ -36,9 +38,9 @@ Mixen.createMixen = (mods...) ->
 
       do (k, v, module) ->
         Inst.__super__[k] = (args...) ->
-          Last._mixen_stack.unshift module
+          stack.unshift module
           ret = v.apply @, args
-          Last._mixen_stack.shift()
+          stack.shift()
           return ret
 
     Last = Inst
@@ -68,7 +70,6 @@ Mixen.createMixen = (mods...) ->
       module.__super__[method] ?= moduleSuper(module, method)
 
   Last._mixen_modules = mods
-  Last._mixen_stack = []
 
   Last
 
@@ -78,7 +79,7 @@ moduleSuper = (module, method) ->
   # It resolves what the next module in the module list which has
   # this method defined and calls that method.
   (args...) ->
-    modules = @constructor._mixen_stack[0]?._mixen_modules or @constructor._mixen_modules
+    modules = stack[0]?._mixen_modules or @constructor._mixen_modules
     return unless modules?
 
     pos = indexOf modules, module
