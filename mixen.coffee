@@ -96,8 +96,7 @@ moduleSuper = (module, method) ->
       break if nextModule::[method]?
 
     if nextModule? and nextModule::? and nextModule::[method]?
-      ret = nextModule::[method].apply @, args
-    return ret
+      return nextModule::[method].apply @, args
 
 if typeof define is 'function' and define.amd
   # AMD

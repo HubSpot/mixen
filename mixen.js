@@ -109,7 +109,7 @@
 
   moduleSuper = function(module, method) {
     return function() {
-      var args, modules, nextModule, pos, ret, _ref;
+      var args, modules, nextModule, pos, _ref;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       modules = ((_ref = this.constructor._mixen_stack[0]) != null ? _ref._mixen_modules : void 0) || this.constructor._mixen_modules;
       if (modules == null) {
@@ -128,9 +128,8 @@
         }
       }
       if ((nextModule != null) && (nextModule.prototype != null) && (nextModule.prototype[method] != null)) {
-        ret = nextModule.prototype[method].apply(this, args);
+        return nextModule.prototype[method].apply(this, args);
       }
-      return ret;
     };
   };
 
