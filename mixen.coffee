@@ -14,8 +14,6 @@ uniqueId = do ->
 Mixen = ->
   Mixen.createMixen arguments...
 
-Mixen.createdMixens = {}
-
 Mixen.createMixen = (mods...) ->
   # Since a single mixin module can be used multiple times, we need to
   # store the id of this instance on the outputted object, so we can
@@ -32,6 +30,16 @@ Mixen.createMixen = (mods...) ->
       constructor: (args...) ->
         for mod in mods
           mod.apply @, args
+
+    for own k, v of Inst.__super__
+      continue unless typeof v is 'function'
+
+      do (k, v, module) ->
+        Inst.__super__[k] = (args...) ->
+          Last._mixen_stack.unshift module
+          ret = v.apply @, args
+          Last._mixen_stack.shift()
+          return ret
 
     Last = Inst
 
@@ -59,9 +67,8 @@ Mixen.createMixen = (mods...) ->
 
       module.__super__[method] ?= moduleSuper(module, method)
 
-  Last::_mixen_id = uniqueId()
-
-  Mixen.createdMixens[Last::_mixen_id] = mods
+  Last._mixen_modules = mods
+  Last._mixen_stack = []
 
   Last
 
@@ -71,30 +78,16 @@ moduleSuper = (module, method) ->
   # It resolves what the next module in the module list which has
   # this method defined and calls that method.
   (args...) ->
-    current = @constructor::
-
-    id = null
-    while true
-      # Navigate up the inheritance tree looking for the object we created
-      # when we built the mixen.  It will have the id we need to find the other
-      # modules.
-
-      # We've hit Object, we're at the top of the inheritance list
-      return if current is Object::
-
-      id = current._mixen_id
-
-      # When we find an id it means `current` is a Mixen
-      break if id?
-
-      current = current.constructor.__super__.constructor::
-
-    return unless id?
-
-    modules = Mixen.createdMixens[id]
+    modules = @constructor._mixen_stack[0]?._mixen_modules or @constructor._mixen_modules
+    return unless modules?
 
     pos = indexOf modules, module
     nextModule = null
+
+    if pos is -1
+      console.error "Something went wrong in Mixen, the appropriate mixin couldn't be found"
+      return
+
     while pos++ < modules.length - 1
       # Look through the remaining modules for the next one which implements
       # the method we're calling.
@@ -103,7 +96,8 @@ moduleSuper = (module, method) ->
       break if nextModule::[method]?
 
     if nextModule? and nextModule::? and nextModule::[method]?
-      return nextModule::[method].apply @, args
+      ret = nextModule::[method].apply @, args
+    return ret
 
 if typeof define is 'function' and define.amd
   # AMD

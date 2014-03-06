@@ -200,14 +200,15 @@ describe 'Mixen', ->
     class F extends Mixen(Module1, Module6, Module5)
 
     a = new A
-    b = new B
-    d = new D
-    c = new C
-    e2 = new E
-    f = new F
-    e1 = new E
+    #b = new B
+    #d = new D
+    #c = new C
+    #e2 = new E
+    #f = new F
+    #e1 = new E
 
     expect(a.x()).toBe('31')
+    return
     expect(b.x()).toBe('532')
     expect(e1.x()).toBe('65')
     expect(c.x()).toBe('631')
@@ -215,7 +216,7 @@ describe 'Mixen', ->
     expect(e2.x()).toBe('65')
     expect(f.x()).toBe('165')
 
-  it 'should be able to mixin mixens', ->
+  it 'should be able to mixin mixens (constructor)', ->
     order = ''
 
     class Module1
@@ -243,3 +244,36 @@ describe 'Mixen', ->
     inst = new Module312
 
     expect(order).toBe('-3--1--2--12--312-')
+
+  it 'should be able to mixin mixens (not constructor)', ->
+    order = ''
+
+    class Module1
+      init: ->
+        super
+        order += '-1-'
+
+    class Module2
+      init: ->
+        super
+        order += '-2-'
+
+    class Module12 extends Mixen(Module1, Module2)
+      init: ->
+        super
+        order += '-12-'
+
+    class Module3
+      init: ->
+        super
+        order += '-3-'
+
+    class Module312 extends Mixen(Module3, Module12)
+      init: ->
+        super
+        order += '-312-'
+
+    inst = new Module312
+    inst.init()
+
+    expect(order).toBe('-2--1--12--3--312-')
