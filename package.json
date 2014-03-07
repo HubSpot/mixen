@@ -1,6 +1,6 @@
 {
   "name": "mixen",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Combine Javascript classes on the fly",
   "main": "mixen.js",
   "directories": {
@@ -27,8 +27,7 @@
   ],
   "license": "MIT",
   "readmeFilename": "README.md",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "coffee-script": "~1.6.3",
     "grunt": "~0.4.1",
