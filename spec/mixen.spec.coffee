@@ -215,7 +215,7 @@ describe 'Mixen', ->
     expect(e2.x()).toBe('65')
     expect(f.x()).toBe('165')
 
-  it 'should be able to mixin mixens', ->
+  it 'should be able to mixin mixens (constructor)', ->
     order = ''
 
     class Module1
@@ -243,3 +243,109 @@ describe 'Mixen', ->
     inst = new Module312
 
     expect(order).toBe('-3--1--2--12--312-')
+
+  it 'should be able to mixin mixens (not constructor)', ->
+    order = ''
+
+    class Module1
+      init: ->
+        super
+        order += '-1-'
+
+    class Module2
+      init: ->
+        super
+        order += '-2-'
+
+    class Module12 extends Mixen(Module1, Module2)
+      init: ->
+        super
+        order += '-12-'
+
+    class Module3
+      init: ->
+        super
+        order += '-3-'
+
+    class Module312 extends Mixen(Module3, Module12)
+      init: ->
+        super
+        order += '-312-'
+
+    inst = new Module312
+    inst.init()
+
+    expect(order).toBe('-2--1--12--3--312-')
+
+  it 'should be able to mixin mixens (not constructor), order flipped', ->
+    order = ''
+
+    class Module1
+      init: ->
+        order += '-1-'
+        super
+
+    class Module2
+      init: ->
+        order += '-2-'
+        super
+
+    class Module12 extends Mixen(Module1, Module2)
+      init: ->
+        order += '-12-'
+        super
+
+    class Module3
+      init: ->
+        order += '-3-'
+        super
+
+    class Module312 extends Mixen(Module3, Module12)
+      init: ->
+        order += '-312-'
+        super
+
+    inst = new Module312
+    inst.init()
+
+    expect(order).toBe('-312--3--12--1--2-')
+
+  it 'should be able to mixin mixens of mixens (not constructor)', ->
+    order = ''
+
+    class Module1
+      init: ->
+        super
+        order += '-1-'
+
+    class Module2
+      init: ->
+        super
+        order += '-2-'
+
+    class Module12 extends Mixen(Module1, Module2)
+      init: ->
+        super
+        order += '-12-'
+
+    class Module3
+      init: ->
+        super
+        order += '-3-'
+
+    class Module312 extends Mixen(Module3, Module12)
+      init: ->
+        super
+        order += '-312-'
+
+    class Module4
+      init: ->
+        super
+        order += '-4-'
+
+    class Module4312 extends Mixen(Module4, Module312)
+
+    inst = new Module4312
+    inst.init()
+
+    expect(order).toBe('-2--1--12--3--312--4-')

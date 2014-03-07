@@ -492,7 +492,7 @@
       expect(e2.x()).toBe('65');
       return expect(f.x()).toBe('165');
     });
-    return it('should be able to mixin mixens', function() {
+    it('should be able to mixin mixens (constructor)', function() {
       var Module1, Module12, Module2, Module3, Module312, inst, order;
       order = '';
       Module1 = (function() {
@@ -543,6 +543,244 @@
       })(Mixen(Module3, Module12));
       inst = new Module312;
       return expect(order).toBe('-3--1--2--12--312-');
+    });
+    it('should be able to mixin mixens (not constructor)', function() {
+      var Module1, Module12, Module2, Module3, Module312, inst, order, _ref, _ref1;
+      order = '';
+      Module1 = (function() {
+        function Module1() {}
+
+        Module1.prototype.init = function() {
+          Module1.__super__.init.apply(this, arguments);
+          return order += '-1-';
+        };
+
+        return Module1;
+
+      })();
+      Module2 = (function() {
+        function Module2() {}
+
+        Module2.prototype.init = function() {
+          Module2.__super__.init.apply(this, arguments);
+          return order += '-2-';
+        };
+
+        return Module2;
+
+      })();
+      Module12 = (function(_super) {
+        __extends(Module12, _super);
+
+        function Module12() {
+          _ref = Module12.__super__.constructor.apply(this, arguments);
+          return _ref;
+        }
+
+        Module12.prototype.init = function() {
+          Module12.__super__.init.apply(this, arguments);
+          return order += '-12-';
+        };
+
+        return Module12;
+
+      })(Mixen(Module1, Module2));
+      Module3 = (function() {
+        function Module3() {}
+
+        Module3.prototype.init = function() {
+          Module3.__super__.init.apply(this, arguments);
+          return order += '-3-';
+        };
+
+        return Module3;
+
+      })();
+      Module312 = (function(_super) {
+        __extends(Module312, _super);
+
+        function Module312() {
+          _ref1 = Module312.__super__.constructor.apply(this, arguments);
+          return _ref1;
+        }
+
+        Module312.prototype.init = function() {
+          Module312.__super__.init.apply(this, arguments);
+          return order += '-312-';
+        };
+
+        return Module312;
+
+      })(Mixen(Module3, Module12));
+      inst = new Module312;
+      inst.init();
+      return expect(order).toBe('-2--1--12--3--312-');
+    });
+    it('should be able to mixin mixens (not constructor), order flipped', function() {
+      var Module1, Module12, Module2, Module3, Module312, inst, order, _ref, _ref1;
+      order = '';
+      Module1 = (function() {
+        function Module1() {}
+
+        Module1.prototype.init = function() {
+          order += '-1-';
+          return Module1.__super__.init.apply(this, arguments);
+        };
+
+        return Module1;
+
+      })();
+      Module2 = (function() {
+        function Module2() {}
+
+        Module2.prototype.init = function() {
+          order += '-2-';
+          return Module2.__super__.init.apply(this, arguments);
+        };
+
+        return Module2;
+
+      })();
+      Module12 = (function(_super) {
+        __extends(Module12, _super);
+
+        function Module12() {
+          _ref = Module12.__super__.constructor.apply(this, arguments);
+          return _ref;
+        }
+
+        Module12.prototype.init = function() {
+          order += '-12-';
+          return Module12.__super__.init.apply(this, arguments);
+        };
+
+        return Module12;
+
+      })(Mixen(Module1, Module2));
+      Module3 = (function() {
+        function Module3() {}
+
+        Module3.prototype.init = function() {
+          order += '-3-';
+          return Module3.__super__.init.apply(this, arguments);
+        };
+
+        return Module3;
+
+      })();
+      Module312 = (function(_super) {
+        __extends(Module312, _super);
+
+        function Module312() {
+          _ref1 = Module312.__super__.constructor.apply(this, arguments);
+          return _ref1;
+        }
+
+        Module312.prototype.init = function() {
+          order += '-312-';
+          return Module312.__super__.init.apply(this, arguments);
+        };
+
+        return Module312;
+
+      })(Mixen(Module3, Module12));
+      inst = new Module312;
+      inst.init();
+      return expect(order).toBe('-312--3--12--1--2-');
+    });
+    return it('should be able to mixin mixens of mixens (not constructor)', function() {
+      var Module1, Module12, Module2, Module3, Module312, Module4, Module4312, inst, order, _ref, _ref1, _ref2;
+      order = '';
+      Module1 = (function() {
+        function Module1() {}
+
+        Module1.prototype.init = function() {
+          Module1.__super__.init.apply(this, arguments);
+          return order += '-1-';
+        };
+
+        return Module1;
+
+      })();
+      Module2 = (function() {
+        function Module2() {}
+
+        Module2.prototype.init = function() {
+          Module2.__super__.init.apply(this, arguments);
+          return order += '-2-';
+        };
+
+        return Module2;
+
+      })();
+      Module12 = (function(_super) {
+        __extends(Module12, _super);
+
+        function Module12() {
+          _ref = Module12.__super__.constructor.apply(this, arguments);
+          return _ref;
+        }
+
+        Module12.prototype.init = function() {
+          Module12.__super__.init.apply(this, arguments);
+          return order += '-12-';
+        };
+
+        return Module12;
+
+      })(Mixen(Module1, Module2));
+      Module3 = (function() {
+        function Module3() {}
+
+        Module3.prototype.init = function() {
+          Module3.__super__.init.apply(this, arguments);
+          return order += '-3-';
+        };
+
+        return Module3;
+
+      })();
+      Module312 = (function(_super) {
+        __extends(Module312, _super);
+
+        function Module312() {
+          _ref1 = Module312.__super__.constructor.apply(this, arguments);
+          return _ref1;
+        }
+
+        Module312.prototype.init = function() {
+          Module312.__super__.init.apply(this, arguments);
+          return order += '-312-';
+        };
+
+        return Module312;
+
+      })(Mixen(Module3, Module12));
+      Module4 = (function() {
+        function Module4() {}
+
+        Module4.prototype.init = function() {
+          Module4.__super__.init.apply(this, arguments);
+          return order += '-4-';
+        };
+
+        return Module4;
+
+      })();
+      Module4312 = (function(_super) {
+        __extends(Module4312, _super);
+
+        function Module4312() {
+          _ref2 = Module4312.__super__.constructor.apply(this, arguments);
+          return _ref2;
+        }
+
+        return Module4312;
+
+      })(Mixen(Module4, Module312));
+      inst = new Module4312;
+      inst.init();
+      return expect(order).toBe('-2--1--12--3--312--4-');
     });
   });
 
