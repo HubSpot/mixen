@@ -277,6 +277,39 @@ describe 'Mixen', ->
 
     expect(order).toBe('-2--1--12--3--312-')
 
+  it 'should be able to mixin mixens (not constructor), mixin order changed', ->
+    order = ''
+
+    class Module1
+      init: ->
+        super
+        order += '-1-'
+
+    class Module2
+      init: ->
+        super
+        order += '-2-'
+
+    class Module12 extends Mixen(Module1, Module2)
+      init: ->
+        super
+        order += '-12-'
+
+    class Module3
+      init: ->
+        super
+        order += '-3-'
+
+    class Module312 extends Mixen(Module12, Module3)
+      init: ->
+        super
+        order += '-312-'
+
+    inst = new Module312
+    inst.init()
+
+    expect(order).toBe('-3--2--1--12--312-')
+
   it 'should be able to mixin mixens (not constructor), order flipped', ->
     order = ''
 
