@@ -1,0 +1,15 @@
+{
+  "name": "mixen",
+  "main": "mixen.coffee",
+  "version": "0.5.4",
+  "homepage": "http://github.hubspot.com/mixen/",
+  "authors": [
+    "Zack Bloom <zbloom@hubspot.com>"
+  ],
+  "description": "Combine Javascript classes on the fly",
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ]
+}
